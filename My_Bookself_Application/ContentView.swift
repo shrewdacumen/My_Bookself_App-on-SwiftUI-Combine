@@ -15,46 +15,46 @@ struct ContentView: View {
     
     var body: some View {
         
-        GeometryReader { proxy in
+        VStack(alignment: .leading, spacing: 10) {
             
-            VStack(alignment: .center, spacing: 10) {
-                
+            HStack {
+                Spacer()
                 TextField("Enter Book Name Here!", text: $search_key)
-                    .frame(width: proxy.size.width*0.85, height: 15, alignment: .center)
                     .onSubmit {
                         //TODO: incomplete. put REST search query here.
                     }
-                
-                
-                HStack(alignment: .center, spacing: 0) {
-                    Text("Recently Searched")
-                    Spacer()
-                    Button {
-                        the_store.saved_searches.removeAll(keepingCapacity: true)
-                    } label: {
-                        Text("Clear")
-                            .font(.headline)
-                            .foregroundColor(Color.red)
-                    }
-                    
+                Spacer()
+            }
+            .padding(.top, 15)
+
+            
+            HStack(alignment: .top, spacing: 0) {
+                Spacer()
+                Text("Recently Searched")
+                Spacer()
+                Button {
+                    the_store.saved_searches.removeAll(keepingCapacity: true)
+                } label: {
+                    Text("Clear")
+                        .font(.headline)
+                        .foregroundColor(Color.red)
                 }
-                .frame(width: proxy.size.width*0.85, height: 35, alignment: .center)
+                Spacer()
             }
             
         }
-        .frame(width: .infinity, height: 15+35+10, alignment: .center)
-        
+            
         Divider()
         
         NavigationView {
             List {
-                
                 ForEach(the_store.saved_searches) { saved_search in
                     VStack(alignment: .center, spacing: 5) {
                         Text(saved_search.id)
                             .fontWeight(.ultraLight)
                         Text(saved_search.title)
                             .font(.headline)
+                        
                         // TODO: incomplete. put NavgationLink here
                         saved_search.thumbnail
                     }
