@@ -20,6 +20,10 @@
 		0916649E27959003002D446F /* Array Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0916649C27959003002D446F /* Array Extension.swift */; };
 		091664A0279592BF002D446F /* Saved_Search.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0916649F279592BF002D446F /* Saved_Search.swift */; };
 		091664A1279592BF002D446F /* Saved_Search.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0916649F279592BF002D446F /* Saved_Search.swift */; };
+		099A7B092795C00700213ECE /* Book_by_isbn13.swift in Sources */ = {isa = PBXBuildFile; fileRef = 099A7B082795C00700213ECE /* Book_by_isbn13.swift */; };
+		099A7B0A2795C00700213ECE /* Book_by_isbn13.swift in Sources */ = {isa = PBXBuildFile; fileRef = 099A7B082795C00700213ECE /* Book_by_isbn13.swift */; };
+		099A7B0D2795C34700213ECE /* Search_a_book.swift in Sources */ = {isa = PBXBuildFile; fileRef = 099A7B0C2795C34700213ECE /* Search_a_book.swift */; };
+		099A7B0E2795C34700213ECE /* Search_a_book.swift in Sources */ = {isa = PBXBuildFile; fileRef = 099A7B0C2795C34700213ECE /* Search_a_book.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -53,6 +57,8 @@
 		0916649927958F65002D446F /* Color Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Color Extension.swift"; sourceTree = "<group>"; };
 		0916649C27959003002D446F /* Array Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Array Extension.swift"; sourceTree = "<group>"; };
 		0916649F279592BF002D446F /* Saved_Search.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Saved_Search.swift; sourceTree = "<group>"; };
+		099A7B082795C00700213ECE /* Book_by_isbn13.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Book_by_isbn13.swift; sourceTree = "<group>"; };
+		099A7B0C2795C34700213ECE /* Search_a_book.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Search_a_book.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -105,7 +111,7 @@
 			children = (
 				090C18092795584100D667B8 /* My_Bookself_ApplicationApp.swift */,
 				090C180B2795584100D667B8 /* ContentView.swift */,
-				0916649F279592BF002D446F /* Saved_Search.swift */,
+				099A7B0B2795C01E00213ECE /* Data Structures */,
 				0916649827958F04002D446F /* Extensions */,
 				090C180D2795584200D667B8 /* Assets.xcassets */,
 				090C180F2795584200D667B8 /* Preview Content */,
@@ -145,6 +151,16 @@
 				0916649C27959003002D446F /* Array Extension.swift */,
 			);
 			path = Extensions;
+			sourceTree = "<group>";
+		};
+		099A7B0B2795C01E00213ECE /* Data Structures */ = {
+			isa = PBXGroup;
+			children = (
+				0916649F279592BF002D446F /* Saved_Search.swift */,
+				099A7B082795C00700213ECE /* Book_by_isbn13.swift */,
+				099A7B0C2795C34700213ECE /* Search_a_book.swift */,
+			);
+			path = "Data Structures";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -279,8 +295,10 @@
 			files = (
 				0916649D27959003002D446F /* Array Extension.swift in Sources */,
 				090C180C2795584100D667B8 /* ContentView.swift in Sources */,
+				099A7B092795C00700213ECE /* Book_by_isbn13.swift in Sources */,
 				0916649A27958F65002D446F /* Color Extension.swift in Sources */,
 				091664A0279592BF002D446F /* Saved_Search.swift in Sources */,
+				099A7B0D2795C34700213ECE /* Search_a_book.swift in Sources */,
 				090C180A2795584100D667B8 /* My_Bookself_ApplicationApp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -289,9 +307,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				099A7B0E2795C34700213ECE /* Search_a_book.swift in Sources */,
 				091664A1279592BF002D446F /* Saved_Search.swift in Sources */,
 				090C181B2795584200D667B8 /* My_Bookself_ApplicationTests.swift in Sources */,
 				0916649E27959003002D446F /* Array Extension.swift in Sources */,
+				099A7B0A2795C00700213ECE /* Book_by_isbn13.swift in Sources */,
 				0916649B27958F65002D446F /* Color Extension.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
