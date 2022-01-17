@@ -33,4 +33,29 @@ class My_Bookself_ApplicationTests: XCTestCase {
         }
     }
 
+    /// #35323E Grayish Violet
+    func test_Color35323E() {
+      
+      let rgbColor = rgbaValue(hex_string: "#35323E")
+      
+      XCTAssertNotNil(rgbColor)
+      XCTAssertEqual(rgbColor!.r, 53.0/255.0)
+      XCTAssertEqual(rgbColor!.g, 50.0/255.0)
+      XCTAssertEqual(rgbColor!.b, 62.0/255.0)
+      XCTAssertEqual(rgbColor!.a, 1.0)
+          
+    }
+    
+    ///  #232127 Very Dark Violet
+    func test_Color232127() {
+      
+      let rgbColor = rgbaValue(hex_string: "#232127")
+      
+      XCTAssertNotNil(rgbColor)
+      XCTAssertEqual(rgbColor!.r, 35.0/255.0)
+      XCTAssertEqual(rgbColor!.g, 33.0/255.0)
+      XCTAssertEqual(rgbColor!.b, 39.0/255.0)
+      XCTAssertEqual(rgbColor!.a, 1.0)
+    }
+    
 }
