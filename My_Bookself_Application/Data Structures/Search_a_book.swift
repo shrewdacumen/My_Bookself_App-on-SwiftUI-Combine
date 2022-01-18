@@ -45,9 +45,10 @@ import Foundation
 
 
 struct Book: Identifiable, Codable {
+    var id = UUID()
     let title: String
     let subtitle: String
-    let id: String
+    let isbn13: String
     let price: String
     let image: String
     let url: String

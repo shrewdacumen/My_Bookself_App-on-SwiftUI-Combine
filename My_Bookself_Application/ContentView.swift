@@ -8,9 +8,17 @@
 import SwiftUI
 
 struct ContentView: View {
-    @ObservedObject var the_store: Store_of_saved_searches
+    enum TheTextFieldMode {
+        /// when tapping the textField and it is before the search execution by pressing the enter key.
+        case showCached
+        /// the mode when the search result is about to see or shown.
+        case showSearchResult
+    }
+    
+    @ObservedObject var the_visited_cache_store: Store_of_The_Visited_Cached
     
     @State var search_key: String = ""
+    @State var textField_mode: TheTextFieldMode = .showCached
     
     
     var body: some View {
@@ -22,6 +30,7 @@ struct ContentView: View {
                 TextField("Enter Book Name Here!", text: $search_key)
                     .onSubmit {
                         //TODO: incomplete. put REST search query here.
+                        textField_mode = .showSearchResult
                     }
                 Spacer()
             }
@@ -33,7 +42,7 @@ struct ContentView: View {
                 Text("Recently Searched")
                 Spacer()
                 Button {
-                    the_store.saved_searches.removeAll(keepingCapacity: true)
+                    the_visited_cache_store.the_visited_cached.removeAll(keepingCapacity: true)
                 } label: {
                     Text("Clear")
                         .font(.headline)
@@ -48,15 +57,15 @@ struct ContentView: View {
         
         NavigationView {
             List {
-                ForEach(the_store.saved_searches) { saved_search in
+                ForEach(the_visited_cache_store.the_visited_cached) { the_visited_cached in
                     VStack(alignment: .center, spacing: 5) {
-                        Text(saved_search.id)
+                        Text(the_visited_cached.isbn13)
                             .fontWeight(.ultraLight)
-                        Text(saved_search.title)
+                        Text(the_visited_cached.title)
                             .font(.headline)
                         
                         // TODO: incomplete. put NavgationLink here
-                        saved_search.thumbnail
+                        the_visited_cached.thumbnail
                     }
                 }
             }
@@ -68,9 +77,9 @@ struct ContentView: View {
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
         Group {
-            ContentView(the_store: preview_store).preferredColorScheme(.dark)
+            ContentView(the_visited_cache_store: preview_store).preferredColorScheme(.dark)
             
-            ContentView(the_store: preview_store).preferredColorScheme(.light)
+            ContentView(the_visited_cache_store: preview_store).preferredColorScheme(.light)
         }
     }
 }
