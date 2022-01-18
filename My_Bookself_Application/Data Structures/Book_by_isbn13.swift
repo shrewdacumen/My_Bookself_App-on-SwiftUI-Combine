@@ -65,15 +65,24 @@ class GetTheSelectedBook: ObservableObject {
             .receive(on: DispatchQueue.main)
             .tryMap(handleOutput)
             .decode (type: Book_by_isbn13.self, decoder: JSONDecoder())
-            .sink { (completion) in
-                switch completion {
+            .sink { (completion_state) in
+                switch completion_state {
                 case .finished:
+#if DEBUG
                     print("It is finished!")
                     print("\(String(describing: self.the_selected_book))")
-                    /// DEBUGGING!
+                    /// Testing!
                     assert(self.the_selected_book != nil)
+#else
+                    break
+#endif
+                    
                 case .failure(let error):
+#if DEBUG
                     print("There was an error \(error)")
+#else
+                    break
+#endif
                 }
             } receiveValue: { [unowned self] (returnedPosts) in
                 self.the_selected_book = returnedPosts

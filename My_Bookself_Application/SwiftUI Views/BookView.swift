@@ -13,13 +13,15 @@ struct BookView: View {
     let isbn13: String
     
     /// ** CAVEAT **
-    /// I segmented SwiftUI views by VStack to avoid the following error.
-    /// **ERROR**: The compiler is unable to type-check this expression in reasonable time;
-    ///             try breaking up the expression into distinct sub-expressions
+    /// This is an observed object: `a reference type`, not a value type!!!
     @ObservedObject var get_the_selected_book = GetTheSelectedBook()
     
     var body: some View {
         
+        /// ** CAVEAT **
+        /// I segmented SwiftUI views by VStack to avoid the following error.
+        /// **ERROR**: The compiler is unable to type-check this expression in reasonable time;
+        ///             try breaking up the expression into distinct sub-expressions
         List {
             
             /// Only after the loading is finished, `the_selected_book` shall be NOT `nil`,
@@ -126,6 +128,7 @@ struct BookView: View {
                             }
                         }
                     }
+                    //TODO: incomplete. Change the frame dimension.
                     .frame(width: .infinity, height: 150, alignment: .center)
                     
                     HStack {
@@ -165,10 +168,11 @@ struct BookView: View {
             
         } /// THE END OF List {}
         .onAppear {
-            // TODO: incomplete. I need to test this part.
+            /// accessing the remote end point IT Bookstore API/books
             get_the_selected_book.get_the_selected_book(isbn13: isbn13)
         }
         .onDisappear {
+            /// clean up threadings to avoid memory leaks.
             get_the_selected_book.cleanUp()
         }
     }
