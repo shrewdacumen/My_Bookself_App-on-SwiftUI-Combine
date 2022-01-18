@@ -19,6 +19,7 @@ struct BookView: View {
             if let the_selected_book = the_selected_book {
                 
                 VStack(alignment: .center, spacing: 10) {
+                    
                     HStack {
                         Text("title")
                         Text(the_selected_book.title)
@@ -61,6 +62,11 @@ struct BookView: View {
                     }
                     
                 }
+                
+                /// * CAVEAT *
+                /// `VStack` has a limit of 14 view elements to produce the resulting `View protocol`.
+                /// * Its Solution *
+                /// I fragmented 14 elements by two VStacks.
                 VStack(alignment: .center, spacing: 10) {
                     
                     HStack {
@@ -99,13 +105,12 @@ struct BookView: View {
                     HStack {
                         Text("PDF")
                         VStack {
-                            //                        ForEach(1...the_selected_book.pdf.keys.count, id: \.self) { i in
-                            /// **Error**
-                            ///                         Generic struct 'ForEach' requires that 'Dictionary<String, String>.Keys' conform to 'RandomAccessCollection'
+                            /// ** The Previous Error **
+                            /// Generic struct 'ForEach' requires that 'Dictionary<String, String>.Keys' conform to 'RandomAccessCollection'
+                            /// ** Its Solution **
+                            /// The return value of keys.sorted() has solved under `ForEach()`
                             ForEach(the_selected_book.pdf.keys.sorted(), id: \.self) { key in
-                                //                            let key = the_selected_book.pdf.keys[i]
                                 Text(key)
-                                //                            Text("[Click Me to Open](\(the_selected_book.pdf.values[i])")
                                 Text("[Click Me to Open](\(the_selected_book.pdf[key]!)")
                             }
                         }
@@ -122,7 +127,7 @@ struct BookView: View {
             
         } /// THE END OF List {}
         .onAppear {
-            
+            // TODO: incomplete. Add loading feature through Combine.
         }
     }
 }
