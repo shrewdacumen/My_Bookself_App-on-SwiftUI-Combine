@@ -48,6 +48,7 @@
 
 /* Begin PBXFileReference section */
 		090669CA2796DF0B006552C2 /* urlByURLComponents.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = urlByURLComponents.swift; path = My_Bookself_Application/urlByURLComponents.swift; sourceTree = SOURCE_ROOT; };
+		090669CC279717CF006552C2 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		090C18062795584100D667B8 /* My_Bookself_Application.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = My_Bookself_Application.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		090C18092795584100D667B8 /* My_Bookself_ApplicationApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = My_Bookself_ApplicationApp.swift; sourceTree = "<group>"; };
 		090C180B2795584100D667B8 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -104,6 +105,7 @@
 		090C17FD2795584100D667B8 = {
 			isa = PBXGroup;
 			children = (
+				090669CC279717CF006552C2 /* README.md */,
 				090C18082795584100D667B8 /* My_Bookself_Application */,
 				090C18192795584200D667B8 /* My_Bookself_ApplicationTests */,
 				090C18232795584200D667B8 /* My_Bookself_ApplicationUITests */,
@@ -491,6 +493,7 @@
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -520,6 +523,7 @@
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				LD_RUNPATH_SEARCH_PATHS = (
