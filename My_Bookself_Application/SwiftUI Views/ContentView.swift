@@ -25,42 +25,10 @@ struct ContentView: View {
     
     var body: some View {
         
-        VStack(alignment: .leading, spacing: 10) {
-            
-            HStack {
-                Spacer()
-                TextField("Enter Book Name Here!", text: $search_key, prompt: Text("Enter Book Name like 'mongodb'"))
-                    .onSubmit {
-                        //TODO: incomplete. put REST search query here.
-                        
-                        //TODO: The following shall be set after getting at least a result.
-                        textField_mode = .showSearchResult
-                    }
-                Spacer()
-            }
-            .padding(.top, 15)
-
-            
-            HStack(alignment: .top, spacing: 0) {
-                Spacer()
-                Text("Recently Searched")
-                Spacer()
-                Button {
-                    the_visited_cache_store.the_visited_cached.removeAll(keepingCapacity: true)
-                } label: {
-                    Text("Clear")
-                        .font(.headline)
-                        .foregroundColor(Color.red)
-                }
-                Spacer()
-            }
-            
-        }
-            
-        Divider()
-        
         NavigationView {
+            
             List {
+                
                 ForEach(the_visited_cache_store.the_visited_cached) { the_cached in
                     VStack(alignment: .center, spacing: 5) {
                         Text(the_cached.isbn13)
@@ -101,9 +69,53 @@ struct ContentView: View {
                         
                     }
                 }
-            }
+            } /// THE END of List {}
+            //            .navigationTitle("My Bookself")
+            .toolbar {
+                
+                ToolbarItemGroup(placement: .navigationBarLeading) {
+                    
+                    VStack(alignment: .center, spacing: 10) {
+                        
+                        HStack {
+                            Spacer()
+                            TextField("Enter Book Name Here!", text: $search_key, prompt: Text("Enter Book Name like 'mongodb'"))
+                                .onSubmit {
+                                    //TODO: incomplete. put REST search query here.
+                                    
+                                    //TODO: The following shall be set after getting at least a result.
+                                    textField_mode = .showSearchResult
+                                }
+                            Spacer()
+                        }
+                        .padding(.top, 15)
+                        
+                        HStack(alignment: .top, spacing: 0) {
+                            Spacer()
+                            Text("Recently Searched")
+                                .font(.headline)
+                                .frame(width: 200, alignment: .topLeading)
+                            Spacer()
+                            Button {
+                                the_visited_cache_store.the_visited_cached.removeAll(keepingCapacity: true)
+                            } label: {
+                                Text("Clear")
+                                    .font(.headline)
+                                    .foregroundColor(Color.red)
+                                    .frame(width: 50, alignment: .topTrailing)
+                            }
+                            .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topTrailing)
+                            Spacer()
+                        }
+                        .padding(.bottom, 10)
+                    }
+                    .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
+                    
+                }
+            } /// THE END of .toolbar {}
             
-        }
+        } /// THE END of NavigationView
+        
     }
 }
 
