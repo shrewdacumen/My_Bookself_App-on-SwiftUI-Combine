@@ -12,5 +12,5 @@ import SwiftUI
 struct TheControlPanel {
     
     static let thumbnail_scale = CGFloat(1.0/3.0)
-    
+    static let BookView_scale = CGFloat(1.0)
 }

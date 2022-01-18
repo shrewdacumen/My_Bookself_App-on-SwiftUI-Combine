@@ -33,21 +33,20 @@ import SwiftUI
 */
 
 struct Book_by_isbn13: Identifiable, Codable {
+    var id = UUID()
     let error: Int
     let title: String
     let subtitle: String
     let authors: String
     let publisher: String
     let isbn10: String
-    
-    /// Use isbn13 as `id`
-    let id: String
-    let pages: Int
+    let isbn13: String
+    let pages: String
     let year: String
     let rating: Int
     let desc: String
     let price: String
     let image: String /// later, it turns Image
     let url: String  /// later, it turns URL
-    let pdf: [String : URL]
+    let pdf: [String : String]
 }

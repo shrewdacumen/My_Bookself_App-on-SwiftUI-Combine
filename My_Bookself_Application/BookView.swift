@@ -12,32 +12,115 @@ struct BookView: View {
     @State var the_selected_book: Book_by_isbn13?
     
     var body: some View {
-        VStack(alignment: .center, spacing: 10) {
+        
+        List {
             
+            /// Only after the loading is finished, `the_selected_book` shall be NOT `nil`,
             if let the_selected_book = the_selected_book {
                 
-                HStack {
-                    Text("isbn13")
-                    Text(isbn13)
-                        .fontWeight(.ultraLight)
+                VStack(alignment: .center, spacing: 10) {
+                    HStack {
+                        Text("title")
+                        Text(the_selected_book.title)
+                    }
+                    
+                    HStack {
+                        Text("subtitle")
+                        Text(the_selected_book.subtitle)
+                    }
+                    
+                    HStack {
+                        Text("authors")
+                        Text(the_selected_book.authors)
+                    }
+                    
+                    HStack {
+                        Text("publisher")
+                        Text(the_selected_book.publisher)
+                    }
+                    
+                    HStack {
+                        Text("isbn10")
+                        Text(the_selected_book.isbn10)
+                    }
+                    
+                    HStack {
+                        Text("isbn13")
+                        Text(the_selected_book.isbn13)
+                            .fontWeight(.ultraLight)
+                    }
+                    
+                    HStack {
+                        Text("pages")
+                        Text(the_selected_book.pages)
+                    }
+                    
+                    HStack {
+                        Text("year")
+                        Text(the_selected_book.year)
+                    }
+                    
+                }
+                VStack(alignment: .center, spacing: 10) {
+                    
+                    HStack {
+                        Text("rating")
+                        HStack {
+                            ForEach(1...the_selected_book.rating, id: \.self) { _ in
+                                Image(systemName: "star.fill")
+                            }
+                        }
+                    }
+                    
+                    HStack {
+                        Text("descrition")
+                        Text(the_selected_book.desc)
+                            .multilineTextAlignment(.leading)
+                            .lineLimit(3)
+                    }
+                    
+                    HStack {
+                        Text("price")
+                        Text(the_selected_book.price)
+                    }
+                    
+                    AsyncImage(url: URL(string: the_selected_book.image), scale: TheControlPanel.BookView_scale) { phase in
+                        if case .success(let image) = phase {
+                            image
+                                .resizable()
+                        }
+                    }
+                    
+                    HStack {
+                        Text("URL")
+                        Text("[Click Me to Open](\(the_selected_book.url)")
+                    }
+                    
+                    HStack {
+                        Text("PDF")
+                        VStack {
+                            //                        ForEach(1...the_selected_book.pdf.keys.count, id: \.self) { i in
+                            /// **Error**
+                            ///                         Generic struct 'ForEach' requires that 'Dictionary<String, String>.Keys' conform to 'RandomAccessCollection'
+                            ForEach(the_selected_book.pdf.keys.sorted(), id: \.self) { key in
+                                //                            let key = the_selected_book.pdf.keys[i]
+                                Text(key)
+                                //                            Text("[Click Me to Open](\(the_selected_book.pdf.values[i])")
+                                Text("[Click Me to Open](\(the_selected_book.pdf[key]!)")
+                            }
+                        }
+                    }
+                    
                 }
                 
-                Text(the_selected_book.title)
-                
-                Text(the_selected_book.subtitle)
-                
-                Text(the_selected_book.authors)
-                
-                Text(the_selected_book.publisher)
-                
-                Text(the_selected_book.isbn10)
-            } else { /// This is for debugging
-                #if DEBUG
+            } else { /// This is only for debugging
+#if DEBUG
                 Text(isbn13)
                     .fontWeight(.ultraLight)
-                #endif
+#endif
             }
-        }
+            
+        } /// THE END OF List {}
         .onAppear {
             
         }
