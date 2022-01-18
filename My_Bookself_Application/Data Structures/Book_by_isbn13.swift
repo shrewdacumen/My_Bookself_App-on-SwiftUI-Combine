@@ -7,6 +7,7 @@
 
 import Foundation
 import SwiftUI
+import Combine
 
 /**
  Captured from the example:
@@ -32,9 +33,8 @@ import SwiftUI
 }
 */
 
-struct Book_by_isbn13: Identifiable, Codable {
-    var id = UUID()
-    let error: Int
+struct Book_by_isbn13: Codable {
+    let error: String
     let title: String
     let subtitle: String
     let authors: String
@@ -43,10 +43,64 @@ struct Book_by_isbn13: Identifiable, Codable {
     let isbn13: String
     let pages: String
     let year: String
-    let rating: Int
+    let rating: String
     let desc: String
     let price: String
     let image: String /// later, it turns Image
     let url: String  /// later, it turns URL
-    let pdf: [String : String]
+    let pdf: [String : String]?
 }
+
+
+class GetTheSelectedBook: ObservableObject {
+    @Published var the_selected_book: Book_by_isbn13?
+    
+    /// this is used to cancel any subscription.
+    var cancellables = Set<AnyCancellable>()
+    
+    func get_the_selected_book(isbn13: String) {
+        let url = urlByURLComponents(last_path_string: isbn13, IT_BookStore_API_kind: .books)
+        URLSession.shared.dataTaskPublisher(for: url)
+            .subscribe(on: DispatchQueue.global(qos: .background))
+            .receive(on: DispatchQueue.main)
+            .tryMap(handleOutput)
+            .decode (type: Book_by_isbn13.self, decoder: JSONDecoder())
+            .sink { (completion) in
+                switch completion {
+                case .finished:
+                    print("It is finished!")
+                    print("\(String(describing: self.the_selected_book))")
+                    /// DEBUGGING!
+                    assert(self.the_selected_book != nil)
+                case .failure(let error):
+                    print("There was an error \(error)")
+                }
+            } receiveValue: { [unowned self] (returnedPosts) in
+                self.the_selected_book = returnedPosts
+            }
+            .store(in: &cancellables)
+    }
+    
+    func handleOutput (output: URLSession.DataTaskPublisher.Output) throws -> Data {
+        guard let response = output.response as? HTTPURLResponse,
+              response.statusCode >= 200 && response.statusCode < 300 else {
+                  throw URLError(.badServerResponse)
+              }
+        return output.data
+    }
+    
+    deinit {
+        cancellables.forEach {
+            $0.cancel()
+        }
+        the_selected_book = nil
+    }
+    
+    func cleanUp() {
+        cancellables.forEach {
+            $0.cancel()
+        }
+        the_selected_book = nil
+    }
+}
+

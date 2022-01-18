@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		090669CB2796DF0B006552C2 /* urlByURLComponents.swift in Sources */ = {isa = PBXBuildFile; fileRef = 090669CA2796DF0B006552C2 /* urlByURLComponents.swift */; };
 		090C180A2795584100D667B8 /* My_Bookself_ApplicationApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 090C18092795584100D667B8 /* My_Bookself_ApplicationApp.swift */; };
 		090C180C2795584100D667B8 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 090C180B2795584100D667B8 /* ContentView.swift */; };
 		090C180E2795584200D667B8 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 090C180D2795584200D667B8 /* Assets.xcassets */; };
@@ -46,6 +47,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		090669CA2796DF0B006552C2 /* urlByURLComponents.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = urlByURLComponents.swift; path = My_Bookself_Application/urlByURLComponents.swift; sourceTree = SOURCE_ROOT; };
 		090C18062795584100D667B8 /* My_Bookself_Application.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = My_Bookself_Application.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		090C18092795584100D667B8 /* My_Bookself_ApplicationApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = My_Bookself_ApplicationApp.swift; sourceTree = "<group>"; };
 		090C180B2795584100D667B8 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -90,6 +92,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		090669C92796DEE6006552C2 /* SwiftUI Views */ = {
+			isa = PBXGroup;
+			children = (
+				090C180B2795584100D667B8 /* ContentView.swift */,
+				0914C9CA27969BF900F5D436 /* BookView.swift */,
+			);
+			path = "SwiftUI Views";
+			sourceTree = "<group>";
+		};
 		090C17FD2795584100D667B8 = {
 			isa = PBXGroup;
 			children = (
@@ -114,8 +125,8 @@
 			isa = PBXGroup;
 			children = (
 				090C18092795584100D667B8 /* My_Bookself_ApplicationApp.swift */,
-				090C180B2795584100D667B8 /* ContentView.swift */,
-				0914C9CA27969BF900F5D436 /* BookView.swift */,
+				090669CA2796DF0B006552C2 /* urlByURLComponents.swift */,
+				090669C92796DEE6006552C2 /* SwiftUI Views */,
 				099A7B0B2795C01E00213ECE /* Data Structures */,
 				0916649827958F04002D446F /* Extensions */,
 				090C180D2795584200D667B8 /* Assets.xcassets */,
@@ -305,6 +316,7 @@
 				0916649A27958F65002D446F /* Color Extension.swift in Sources */,
 				091664A0279592BF002D446F /* TheVisitedCached.swift in Sources */,
 				099A7B0D2795C34700213ECE /* Search_a_book.swift in Sources */,
+				090669CB2796DF0B006552C2 /* urlByURLComponents.swift in Sources */,
 				090C180A2795584100D667B8 /* My_Bookself_ApplicationApp.swift in Sources */,
 				0914C9CB27969BF900F5D436 /* BookView.swift in Sources */,
 				0914C9CD2796B4D700F5D436 /* TheControlPanel.swift in Sources */,

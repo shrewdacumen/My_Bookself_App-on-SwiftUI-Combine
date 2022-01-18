@@ -29,7 +29,7 @@ struct ContentView: View {
             
             HStack {
                 Spacer()
-                TextField("Enter Book Name Here!", text: $search_key, prompt: Text("mongodb"))
+                TextField("Enter Book Name Here!", text: $search_key, prompt: Text("Enter Book Name like 'mongodb'"))
                     .onSubmit {
                         //TODO: incomplete. put REST search query here.
                         
@@ -64,12 +64,11 @@ struct ContentView: View {
                 ForEach(the_visited_cache_store.the_visited_cached) { the_cached in
                     VStack(alignment: .center, spacing: 5) {
                         Text(the_cached.isbn13)
-                            .fontWeight(.ultraLight)
+                            .fontWeight(.light)
                         Text(the_cached.title)
                             .font(.headline)
                         
-                        
-                        /// Those cases of both before thumbnail is cached or when it is being used by `ContentView_Previews`
+                        /// When the cached thumbnail exists,
                         if let thumbnail = the_cached.thumbnail {
                             
                             NavigationLink(destination: BookView(isbn13: the_cached.isbn13)) {
@@ -78,9 +77,10 @@ struct ContentView: View {
                             // when tapped, textField_mode == .showCached
                             .onTapGesture {
                                 textField_mode = .showCached
+                                /// When clicking the NavigationLink, it will cache it by appending it
+                                the_visited_cache_store.the_visited_cached.append(TheVisitedCached(title: the_cached.title, isbn13: the_cached.isbn13, image_string: the_cached.image_string, thumbnail: thumbnail))
                             }
-                        } else { /// When the cached thumbnail exists,
-                            
+                        } else { /// Those cases of both before thumbnail is cached or when it is being used by `ContentView_Previews`
                             NavigationLink(destination: BookView(isbn13: the_cached.isbn13)) {
                                 AsyncImage(url: URL(string: the_cached.image_string), scale: TheControlPanel.thumbnail_scale) { phase in
                                     if case .success(let image) = phase {
@@ -93,6 +93,8 @@ struct ContentView: View {
                             // when tapped, textField_mode == .showCached
                             .onTapGesture {
                                 textField_mode = .showCached
+                                /// When clicking the NavigationLink, it will cache it by appending it
+                                the_visited_cache_store.the_visited_cached.append(TheVisitedCached(title: the_cached.title, isbn13: the_cached.isbn13, image_string: the_cached.image_string, thumbnail: the_cached.thumbnail))
                             }
                         }
                         
