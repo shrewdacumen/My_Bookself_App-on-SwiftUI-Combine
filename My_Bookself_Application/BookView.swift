@@ -64,7 +64,8 @@ struct BookView: View {
                 }
                 
                 /// * CAVEAT *
-                /// `VStack` has a limit of 14 view elements to produce the resulting `View protocol`.
+                /// `VStack` has a limit of 13 views to produce the resulting `View protocol`,
+                ///   related to `@ViewBuilder`
                 /// * Its Solution *
                 /// I fragmented 14 elements by two VStacks.
                 VStack(alignment: .center, spacing: 10) {
