@@ -120,16 +120,23 @@ struct BookView: View {
                     HStack {
                         Text("image")
                             .padding(.trailing, 20)
-                        AsyncImage(url: URL(string: the_selected_book.image), scale: TheControlPanel.BookView_scale) { phase in
-                            if case .success(let image) = phase {
-                                image
-                                    .resizable()
-                                    .scaledToFit()
+                        AsyncImage(url: URL(string: the_selected_book.image)) { image in
+                            image
+                                .frame(width: TheControlPanel.BookView_image_size.width, height: TheControlPanel.BookView_image_size.height, alignment: .center)
+                            
+                        } placeholder: {
+                            ZStack {
+                                Text("Loading ...")
+                                    .foregroundColor(Color.yellow)
+                                RoundedRectangle(cornerSize: CGSize(width: 10, height: 10))
+                                    .frame(width: TheControlPanel.BookView_image_size.width, height: TheControlPanel.BookView_image_size.height, alignment: .center)
+                                    .foregroundColor(Color.blue)
                             }
                         }
                     }
-                    //TODO: incomplete. Change the frame dimension.
-                    .frame(width: .infinity, height: 150, alignment: .center)
+                    .frame(height: TheControlPanel.BookView_image_size.height, alignment: .leading)
+                    .padding(.top, 30)
+                    .padding(.bottom, 30)
                     
                     HStack {
                         Text("URL")

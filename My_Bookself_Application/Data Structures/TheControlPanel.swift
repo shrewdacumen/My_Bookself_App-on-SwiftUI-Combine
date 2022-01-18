@@ -10,7 +10,6 @@ import SwiftUI
 
 /// The global values which affects globally.
 struct TheControlPanel {
-    
-    static let thumbnail_scale = CGFloat(1.0/3.0)
-    static let BookView_scale = CGFloat(1.0)
+    static let BookView_image_size = CGSize(width: 200.0, height: 233)
+    static let ContentView_image_size = CGSize(width: 100.0, height: 117)
 }

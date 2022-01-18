@@ -38,7 +38,6 @@ struct ContentView: View {
                         
                         /// When the cached thumbnail exists,
                         if let thumbnail = the_cached.thumbnail {
-                            
                             NavigationLink(destination: BookView(isbn13: the_cached.isbn13)) {
                                 thumbnail
                             }
@@ -48,13 +47,22 @@ struct ContentView: View {
                                 /// When clicking the NavigationLink, it will cache it by appending it
                                 the_visited_cache_store.the_visited_cached.append(TheVisitedCached(title: the_cached.title, isbn13: the_cached.isbn13, image_string: the_cached.image_string, thumbnail: thumbnail))
                             }
-                        } else { /// Those cases of both before thumbnail is cached or when it is being used by `ContentView_Previews`
+                        } else { /// Those cases of both BEFORE thumbnail is cached or when it is being used by ContentView_Previews
                             NavigationLink(destination: BookView(isbn13: the_cached.isbn13)) {
-                                AsyncImage(url: URL(string: the_cached.image_string), scale: TheControlPanel.thumbnail_scale) { phase in
-                                    if case .success(let image) = phase {
-                                        image.resizable().onAppear {
+                                AsyncImage(url: URL(string: the_cached.image_string)) { image in
+                                    image
+                                        .frame(width: TheControlPanel.ContentView_image_size.width, height: TheControlPanel.ContentView_image_size.height, alignment: .center)
+                                        .onAppear {
                                             the_cached.thumbnail = image
+                                            
                                         }
+                                } placeholder: {
+                                    ZStack {
+                                        Text("Loading ...")
+                                            .foregroundColor(Color.yellow)
+                                        RoundedRectangle(cornerSize: CGSize(width: 10, height: 10))
+                                            .frame(width: TheControlPanel.ContentView_image_size.width, height: TheControlPanel.ContentView_image_size.height, alignment: .center)
+                                            .foregroundColor(Color.blue)
                                     }
                                 }
                             }

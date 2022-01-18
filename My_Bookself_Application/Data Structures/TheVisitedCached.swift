@@ -43,12 +43,19 @@ class Store_of_The_Visited_Cached: ObservableObject {
 @ViewBuilder func prepare__preview_of_the_visited_cache_store(url_list: [String]) -> some View {
     /// WARNING: `url_list.count` Non-constant range: argument must be an integer literal
     ForEach(0..<url_list.count) { i in
-        /// For example, AsyncImage(url: URL(string: "https://itbook.store/img/books/9781484206485.png"), scale: 1.0/3.0)
-        AsyncImage(url: URL(string: url_list[i]), scale: TheControlPanel.thumbnail_scale) { phase in
-            if case .success(let image) = phase {
-                image.resizable().onAppear {
+        AsyncImage(url: URL(string: url_list[i])) { image in
+            image
+                .frame(width: TheControlPanel.ContentView_image_size.width, height: TheControlPanel.ContentView_image_size.height, alignment: .center)
+                .onAppear {
                     preview_of_the_visited_cache_store.the_visited_cached[i].thumbnail = image
                 }
+        } placeholder: {
+            ZStack {
+                Text("Loading ...")
+                    .foregroundColor(Color.yellow)
+                RoundedRectangle(cornerSize: CGSize(width: 10, height: 10))
+                    .frame(width: TheControlPanel.ContentView_image_size.width, height: TheControlPanel.ContentView_image_size.height, alignment: .center)
+                    .foregroundColor(Color.blue)
             }
         }
     }
