@@ -54,7 +54,8 @@ struct Book: Identifiable, Codable {
     let url: String
 }
 
-struct Search_a_book: Codable {
+struct Search_a_book: Identifiable, Codable {
+    var id = UUID()
     let total: Int
     let page: Int
     let books: [Book]
