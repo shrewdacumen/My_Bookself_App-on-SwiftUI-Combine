@@ -16,10 +16,8 @@ struct BookView: View {
     /// This is an observed object: `a reference type`, not a value type!!!
     @StateObject var get_the_selected_book = GetTheSelectedBook()
     
-    //TODO: incomplete. the_visited_cached not working.
     @ObservedObject var the_visited_cache_store: Store_of_The_Visited_Cached
     
-    //TODO: incomplete. the_visited_cached not working.
     @ObservedObject var the_visited_cached: TheVisitedCached
     
     var body: some View {

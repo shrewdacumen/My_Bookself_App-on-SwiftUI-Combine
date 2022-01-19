@@ -95,11 +95,12 @@ class Get__Search_Results: ObservableObject {
                     assert(self.the_search_results[1] != nil)
                     
                     self.books_from_all_pages.append(contentsOf: self.the_search_results[1]!.books)
-                    
                     guard let total_number_of_books = Int(self.the_search_results[1]!.total), total_number_of_books > 0 else {
                         return
                     }
                     let num_of_books_in_page_1 = self.the_search_results[1]!.books.count
+                    
+                    /// get the higher integer from the real number.
                     var number_of_pages__estimated = total_number_of_books/num_of_books_in_page_1
                     if Double(number_of_pages__estimated) < (Double(total_number_of_books)/Double(num_of_books_in_page_1)) {
                         number_of_pages__estimated += 1
