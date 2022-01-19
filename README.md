@@ -1,4 +1,4 @@
-#  Exercise Project `My_Bookself_Application`
+#  Exercise Project `My_Bookself_App on SwiftUI & Combine`
 
 ## Xcode Environment:
 Xcode Version 13.2.1 (13C100)
@@ -14,6 +14,10 @@ frameworks: SwiftUI 3.0, Combine
 
 
 ### This project is designed and developed in the mind of a limited time frame: possibly 3 hours, the goal. 
+
+## motif in the whole design:
+- Consider `Music.app` that is an Apple's offcial iOS app.
+   esp., in the functions and actions in initiating the search on the textField.
 
 ## The REST endpoint used in this project
    Please follow up the link for more infomation: [IT Bookstore API](https://api.itbook.store/)
