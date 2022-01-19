@@ -179,6 +179,7 @@ class Get__Search_Results: ObservableObject {
             $0.cancel()
         }
         the_search_results.removeAll(keepingCapacity: true)
+        books_from_all_pages.removeAll(keepingCapacity: true)
     }
     
     /// cancel all ongoing tasks of getting data from the remote endpoints.
@@ -187,6 +188,7 @@ class Get__Search_Results: ObservableObject {
             $0.cancel()
         }
         the_search_results.removeAll(keepingCapacity: true)
+        books_from_all_pages.removeAll(keepingCapacity: true)
     }
     
     func cancel_all_threads() {
