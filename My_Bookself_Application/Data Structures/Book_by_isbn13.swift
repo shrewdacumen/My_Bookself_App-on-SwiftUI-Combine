@@ -52,6 +52,8 @@ struct Book_by_isbn13: Codable {
 }
 
 
+/// This data structure is for getting REST data from IT Bookstore API/books
+/// that is necessary for `BookView`
 class GetTheSelectedBook: ObservableObject {
     @Published var the_selected_book: Book_by_isbn13?
     
@@ -105,6 +107,7 @@ class GetTheSelectedBook: ObservableObject {
         the_selected_book = nil
     }
     
+    /// cancel all ongoing tasks of getting data from the remote endpoints.
     func cleanUp() {
         cancellables.forEach {
             $0.cancel()

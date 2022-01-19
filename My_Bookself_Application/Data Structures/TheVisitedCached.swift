@@ -39,7 +39,7 @@ class Store_of_The_Visited_Cached: ObservableObject {
 }
 
 
-//TODO: incomplete. This is an experimental feature.
+//TODO: incomplete. This is an experimental feature for `ContentView_Previews`
 @ViewBuilder func prepare__preview_of_the_visited_cache_store(url_list: [String]) -> some View {
     /// WARNING: `url_list.count` Non-constant range: argument must be an integer literal
     ForEach(0..<url_list.count) { i in
@@ -61,6 +61,8 @@ class Store_of_The_Visited_Cached: ObservableObject {
     }
 }
 
+
+/// The default data for `ContentView_Previews`
 let preview_of_the_visited_cache_store = Store_of_The_Visited_Cached(the_visited_cached: [
     TheVisitedCached(title: "Practical MongoDB", isbn13: "9781484206485", image_string: "https://itbook.store/img/books/9781484206485.png", thumbnail: Image("9781484206485 thumbnail")),
     TheVisitedCached(title: "The Definitive Guide to MongoDB, 3rd Edition", isbn13: "9781484211830", image_string: "https://itbook.store/img/books/9781484211830.png", thumbnail: Image("9781484211830 thumbnail")),

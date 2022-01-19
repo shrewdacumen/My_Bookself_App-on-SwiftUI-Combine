@@ -167,9 +167,14 @@ struct BookView: View {
                 
             } else { /// As long as `get_the_selected_book.the_selected_book == nil`
                 
+                Text("Getting the data from a remote endpoint...")
+                    .font(.title)
+                    .frame(maxWidth: .infinity, alignment: .center)
+                
 #if DEBUG /// This is only for debugging
                 Text(isbn13)
                     .fontWeight(.light)
+                    .padding(.top, 50)
 #endif
             }
             

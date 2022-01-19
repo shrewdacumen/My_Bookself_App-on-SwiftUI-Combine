@@ -10,12 +10,9 @@ import SwiftUI
 @main
 struct My_Bookself_ApplicationApp: App {
     
-    // MARK: The following should be uncomment before the project goes public!!!
-    @StateObject var the_visited_cache_store = Store_of_The_Visited_Cached(the_visited_cached: [])
-    
-    // MARK: The following is for debugging. Do not remove until all testings of remote endpoints are done.
-    /// The purpose is to test it on the Simulator or the real iOS devices.
-//        @StateObject var the_visited_cache_store = preview_of_the_visited_cache_store
+    /// The control of the initial data of `the_visited_cache_store` is dependent on TDD (test-driven development) setting that
+    ///  is declared in `struct TheControlPanel`.  Please see it for more information.
+    @StateObject var the_visited_cache_store = TheControlPanel.TDD_SETTING != .TEST_BookView ? Store_of_The_Visited_Cached(the_visited_cached: []):preview_of_the_visited_cache_store
     
     var body: some Scene {
         WindowGroup {
