@@ -14,7 +14,7 @@ struct BookView: View {
     
     /// ** CAVEAT **
     /// This is an observed object: `a reference type`, not a value type!!!
-    @ObservedObject var get_the_selected_book = GetTheSelectedBook()
+    @StateObject var get_the_selected_book = GetTheSelectedBook()
     
     //TODO: incomplete. the_visited_cached not working.
     @ObservedObject var the_visited_cache_store: Store_of_The_Visited_Cached
@@ -202,9 +202,8 @@ struct BookView: View {
             /// accessing the remote end point IT Bookstore API/books
             get_the_selected_book.get_the_selected_book(isbn13: isbn13)
             
-            // MARK: incomplete. the following disrupts the function. why?
             /// add the visited book to the cache.
-            //            add_the_data_to_the_cache(the_cached: the_visited_cached)
+            add_the_data_to_the_cache(the_cached: the_visited_cached)
         }
         .onDisappear {
             /// clean up threadings to avoid memory leaks.

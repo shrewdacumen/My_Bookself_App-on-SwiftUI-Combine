@@ -37,12 +37,8 @@ struct ContentView: View {
     @ObservedObject var the_visited_cache_store: Store_of_The_Visited_Cached
     
     @State var search_key: String = ""
-    //TODO: incomplete. add the feature accordingly.
-    @State var the_total_pages_searched = 0
     
-    //TODO: incomplete. currently, it has no function.
-    @State var textField_mode: TheTextFieldMode = .showCached
-    @ObservedObject var get_the_search_results = Get__Search_Results()
+    @StateObject var get_the_search_results = Get__Search_Results()
     
     var body: some View {
         
@@ -53,7 +49,7 @@ struct ContentView: View {
                 // Mark: - This section that lists the searched results
                 
                 /// As soon as it has a search_results,
-                if get_the_search_results.does_it_have_search_results() {
+                if get_the_search_results.does_it_have_search_results() && search_key != "" {
                     
                     let the_search_results_1_or_2 = get_the_search_results.the_search_results[1] ?? get_the_search_results.the_search_results[2]
                     
@@ -96,12 +92,6 @@ struct ContentView: View {
                         }
                         
                     } /// THE END of ForEach(the_search_results_1_or_2!.books, id: \.isbn13) { each_book_InTheSearchResults in
-                    .onAppear {
-                        textField_mode = .showSearchResult
-                    }
-                    .onDisappear {
-                        textField_mode = .showCached
-                    }
                     
                 } else {
                     
@@ -177,10 +167,6 @@ struct ContentView: View {
                             // MARK: The `TextField` here!
                             TextField("Enter Book Name Here!", text: $search_key, prompt: Text("Enter Book Name like 'mongodb'"))
                                 .onSubmit {
-                                    //TODO: incomplete. put REST search query here.
-                                    
-                                    //TODO: The following shall be set after getting at least a result.
-                                    textField_mode = .showSearchResult
                                     
                                     /// remove the previous search results.
                                     get_the_search_results.cleanUp()
@@ -224,9 +210,6 @@ struct ContentView: View {
         
     }
     
-    func enter_into_the_caching_state() {
-        textField_mode = .showCached
-    }
 }
 
 struct ContentView_Previews: PreviewProvider {
