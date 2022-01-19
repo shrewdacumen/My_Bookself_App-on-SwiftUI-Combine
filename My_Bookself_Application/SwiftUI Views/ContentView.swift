@@ -50,6 +50,8 @@ struct ContentView: View {
             
             List {
                 
+                // Mark: - This section that lists the searched results
+                
                 /// As soon as it has a search_results,
                 if get_the_search_results.does_it_have_search_results() {
                     
@@ -73,26 +75,24 @@ struct ContentView: View {
                             add_the_data_to_the_cache(the_cached: TheVisitedCached(title: each_book_InTheSearchResults.title, isbn13: each_book_InTheSearchResults.isbn13, image_string: each_book_InTheSearchResults.image, thumbnail: nil))
                         }
                         
-                        HStack {
-                            Text("image")
-                                .padding(.trailing, 20)
-                            
-                            AsyncImage(url: URL(string: each_book_InTheSearchResults.image)) { image in
-                                image
+                        
+                        AsyncImage(url: URL(string: each_book_InTheSearchResults.image)) { image in
+                            image
+                                .resizable()
+                                .frame(width: TheControlPanel.ContentView_image_size.width, height: TheControlPanel.ContentView_image_size.height, alignment: .center)
+                        } placeholder: {
+                            ZStack {
+                                Text("Loading ...")
+                                    .foregroundColor(Color.yellow)
+                                RoundedRectangle(cornerSize: CGSize(width: 10, height: 10))
                                     .frame(width: TheControlPanel.ContentView_image_size.width, height: TheControlPanel.ContentView_image_size.height, alignment: .center)
-                            } placeholder: {
-                                ZStack {
-                                    Text("Loading ...")
-                                        .foregroundColor(Color.yellow)
-                                    RoundedRectangle(cornerSize: CGSize(width: 10, height: 10))
-                                        .frame(width: TheControlPanel.ContentView_image_size.width, height: TheControlPanel.ContentView_image_size.height, alignment: .center)
-                                        .foregroundColor(Color.blue)
-                                }
+                                    .foregroundColor(Color.blue)
                             }
                         }
-                        //                        .frame(height: TheControlPanel.BookView_image_size.height, alignment: .leading)
-                        //                        .padding(.top, 30)
-                        //                        .padding(.bottom, 30)
+                        .frame(width: TheControlPanel.ContentView_image_size.width, height: TheControlPanel.ContentView_image_size.height, alignment: .center)
+                        //                        .padding(.top, 15)
+                        //                        .padding(.bottom, 15)
+                        
                         
                         HStack {
                             Text("URL")
@@ -111,7 +111,7 @@ struct ContentView: View {
                     
                 } else {
                     
-                    // Mark: - This section that caches the search data
+                    // Mark: - This section that caches the visited books
                     /// that is stored as `the_visited_cache_store` in this project.
                     ///
                     /// **NOTE**
@@ -135,8 +135,10 @@ struct ContentView: View {
                                 thumbnail
                                 
                             } else { /// Those cases of both BEFORE thumbnail is cached or when it is being used by ContentView_Previews
+                                
                                 AsyncImage(url: URL(string: the_cached.image_string)) { image in
                                     image
+                                        .resizable()
                                         .frame(width: TheControlPanel.ContentView_image_size.width, height: TheControlPanel.ContentView_image_size.height, alignment: .center)
                                         .onAppear {
                                             the_cached.thumbnail = image
@@ -151,13 +153,16 @@ struct ContentView: View {
                                             .foregroundColor(Color.blue)
                                     }
                                 }
+                                .frame(width: TheControlPanel.ContentView_image_size.width, height: TheControlPanel.ContentView_image_size.height, alignment: .center)
+                                //                                .padding(.top, 15)
+                                //                                .padding(.bottom, 15)
                                 
                             }
                             
                         } /// THE END OF VStack(alignment: .center, spacing: 5) {
-                            
+                        
                     } /// THE END OF ForEach(the_visited_cache_store.the_visited_cached.sorted(), id: \.self) { the_cached in
-
+                    
                     
                 } /// THE END of  } else {
                 

@@ -134,6 +134,7 @@ struct BookView: View {
                             .padding(.trailing, 20)
                         AsyncImage(url: URL(string: the_selected_book.image)) { image in
                             image
+                                .resizable()
                                 .frame(width: TheControlPanel.BookView_image_size.width, height: TheControlPanel.BookView_image_size.height, alignment: .center)
                             
                         } placeholder: {
@@ -147,8 +148,8 @@ struct BookView: View {
                         }
                     }
                     .frame(height: TheControlPanel.BookView_image_size.height, alignment: .leading)
-                    .padding(.top, 30)
-                    .padding(.bottom, 30)
+                    //                    .padding(.top, 15)
+                    //                    .padding(.bottom, 15)
                     
                     HStack {
                         Text("URL")
