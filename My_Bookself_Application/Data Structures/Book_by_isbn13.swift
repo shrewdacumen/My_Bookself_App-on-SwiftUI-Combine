@@ -33,6 +33,8 @@ import Combine
 }
 */
 
+/// `Book_by_isbn13`
+/// The JSON placeholder data structure of IT Bookstore API/books in Swfit.
 struct Book_by_isbn13: Codable {
     let error: String
     let title: String
@@ -52,7 +54,7 @@ struct Book_by_isbn13: Codable {
 }
 
 
-/// This data structure is for getting REST data from IT Bookstore API/books
+/// This data structure is for getting the REST data from IT Bookstore API/books
 /// that is necessary for `BookView`
 class GetTheSelectedBook: ObservableObject {
     @Published var the_selected_book: Book_by_isbn13?

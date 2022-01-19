@@ -39,19 +39,27 @@ frameworks: SwiftUI 3.0, Combine
 - It caches the search data that is stored as `the_visited_cache_store` in this project.
 - The first view when the user launch the app.
 - TheVisitedCached and Store_of_The_Visited_Cached are both the view models which supports `ContentView`
-
+### Data Structure `Search_Results` 
+    The JSON placeholder data structure of IT Bookstore API/search in Swfit.
+### Data Structure `A_Book`
+    The JSON placeholder data structure of IT Bookstore API/search in Swfit.
+### Data Structure `class Get__Search_Results`
+    It is designed for fetching the remote data from the endpoint through
+    its member function `func get_the_search_results(search_key: String)` based on the native `Combine framework` of Apple Inc.
 
 ## BookView, a SwiftUI view, also called `Detail Book` in the `App Structure.png` picture.
 - Endpoint​: https://api.itbook.store/1.0/books/{isbn13}
 - Allows the user to take a note.
 - Connects hyperlink with the book’s URL.
 - The subsequent view being presented by ContentView (through NavigationView).
-- It get its data from the remote endpoint "IT Bookstore API/books"
-- The Codable `struct Book_by_isbn13` is the placeholder JSON structure.
-- And `class GetTheSelectedBook` is designed for fetching the remote data from the endpoint through
-     it member function `func get_the_selected_book(isbn13: String)` based on the native `Combine framework` of Apple Inc.
-
-
+- It get its data from the remote endpoint "IT Bookstore API/books" 
+### Data Structure `Book_by_isbn13`
+    The JSON placeholder data structure of IT Bookstore API/books in Swfit.     
+### Data Structure `class GetTheSelectedBook`
+    It is designed for fetching the remote data from the endpoint through
+    its member function `func get_the_selected_book(isbn13: String)` based on the native `Combine framework` of Apple Inc.
+     
+     
 ## TheControlPanel struct
 - It contains Test-Driven Development features.
 - It controls the global setting across all the sources of the app.

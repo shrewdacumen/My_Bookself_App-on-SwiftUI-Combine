@@ -21,6 +21,9 @@ struct ContentView: View {
     @ObservedObject var the_visited_cache_store: Store_of_The_Visited_Cached
     
     @State var search_key: String = ""
+    //TODO: incomplete. add the feature accordingly.
+    @State var the_total_pages_searched = 0
+    
     @State var textField_mode: TheTextFieldMode = .showCached
     
     var body: some View {
@@ -91,6 +94,8 @@ struct ContentView: View {
                         // Mark: - The First Row
                         HStack {
                             Spacer()
+                            
+                            // MARK: The `TextField` here!
                             TextField("Enter Book Name Here!", text: $search_key, prompt: Text("Enter Book Name like 'mongodb'"))
                                 .onSubmit {
                                     //TODO: incomplete. put REST search query here.
@@ -98,6 +103,7 @@ struct ContentView: View {
                                     //TODO: The following shall be set after getting at least a result.
                                     textField_mode = .showSearchResult
                                 }
+                            
                             Spacer()
                         }
                         .padding(.top, 15)
