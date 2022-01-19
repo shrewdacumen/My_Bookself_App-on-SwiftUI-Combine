@@ -28,6 +28,15 @@ struct BookView: View {
             if let the_selected_book = get_the_selected_book.the_selected_book {
                 
                 VStack(alignment: .leading, spacing: 10) {
+
+                    /// This section will appear only when `error_code != 0`,
+                    if let error_code = Int(the_selected_book.error), error_code != 0 {
+                        HStack {
+                            Text("error code")
+                                .padding(.trailing, 20)
+                            Text(the_selected_book.error)
+                        }
+                    }
                     
                     HStack {
                         Text("title")
