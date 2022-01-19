@@ -162,6 +162,12 @@ class Get__Search_Results: ObservableObject {
         the_search_results.removeAll(keepingCapacity: true)
     }
     
+    func cancel_all_threads() {
+        cancellables.forEach {
+            $0.cancel()
+        }
+    }
+    
     func does_it_have_search_results() -> Bool {
         the_search_results.isEmpty == false
     }

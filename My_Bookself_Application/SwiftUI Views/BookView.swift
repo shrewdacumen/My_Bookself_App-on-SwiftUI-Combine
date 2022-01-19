@@ -16,6 +16,12 @@ struct BookView: View {
     /// This is an observed object: `a reference type`, not a value type!!!
     @ObservedObject var get_the_selected_book = GetTheSelectedBook()
     
+    //TODO: incomplete. the_visited_cached not working.
+    @ObservedObject var the_visited_cache_store: Store_of_The_Visited_Cached
+    
+    //TODO: incomplete. the_visited_cached not working.
+    @ObservedObject var the_visited_cached: TheVisitedCached
+    
     var body: some View {
         
         /// ** CAVEAT **
@@ -195,6 +201,10 @@ struct BookView: View {
         .onAppear {
             /// accessing the remote end point IT Bookstore API/books
             get_the_selected_book.get_the_selected_book(isbn13: isbn13)
+            
+            // MARK: incomplete. the following disrupts the function. why?
+            /// add the visited book to the cache.
+            //            add_the_data_to_the_cache(the_cached: the_visited_cached)
         }
         .onDisappear {
             /// clean up threadings to avoid memory leaks.
@@ -202,14 +212,23 @@ struct BookView: View {
         }
     }
     
-    
+    /// `func add_the_data_to_the_cache()`
+    /// add the visited book to the cache.
+    ///
+    ///  ** ASSUMPTION **
+    /// when tapped, textField_mode == .showCached
+    /// To paraphrase it, when tapping the searched item, it will be cached,
+    func add_the_data_to_the_cache(the_cached: TheVisitedCached) {
+        /// When clicking the NavigationLink, it will cache it by appending it
+        the_visited_cache_store.the_visited_cached.insert(TheVisitedCached(title: the_cached.title, isbn13: the_cached.isbn13, image_string: the_cached.image_string, thumbnail: the_cached.thumbnail))
+    }
     
 }
 
-struct BookView_Previews: PreviewProvider {
-    static var previews: some View {
-        /// When isbn13 becomes @Binding var, the following is necessary:
-        // BookView(isbn13: Binding(get: { preview_of_the_visited_cache_store.the_visited_cached.first!.isbn13 }, set: {_ in }))
-        BookView(isbn13: preview_of_the_visited_cache_store.the_visited_cached.first!.isbn13 )
-    }
-}
+//struct BookView_Previews: PreviewProvider {
+//    static var previews: some View {
+//        /// When isbn13 becomes @Binding var, the following is necessary:
+//        // BookView(isbn13: Binding(get: { preview_of_the_visited_cache_store.the_visited_cached.first!.isbn13 }, set: {_ in }))
+//        BookView(isbn13: preview_of_the_visited_cache_store.the_visited_cached.first!.isbn13 )
+//    }
+//}

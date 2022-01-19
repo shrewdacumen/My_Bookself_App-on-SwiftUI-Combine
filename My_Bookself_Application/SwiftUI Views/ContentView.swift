@@ -59,7 +59,7 @@ struct ContentView: View {
                     
                     ForEach(the_search_results_1_or_2!.books, id: \.isbn13) { each_book_InTheSearchResults in
                         
-                        NavigationLink(destination: BookView(isbn13: each_book_InTheSearchResults.isbn13)) {
+                        NavigationLink(destination: BookView(isbn13: each_book_InTheSearchResults.isbn13, the_visited_cache_store: the_visited_cache_store, the_visited_cached: TheVisitedCached(title: each_book_InTheSearchResults.title, isbn13: each_book_InTheSearchResults.isbn13, image_string: each_book_InTheSearchResults.image, thumbnail: nil))) {
                             VStack(alignment: .center, spacing: 5) {
                                 Text(each_book_InTheSearchResults.isbn13)
                                     .fontWeight(.light)
@@ -70,11 +70,6 @@ struct ContentView: View {
                                 Text(each_book_InTheSearchResults.price)
                             }
                         }
-                        //TODO: incomplete. move the following to BookView.
-                        .onTapGesture {
-                            add_the_data_to_the_cache(the_cached: TheVisitedCached(title: each_book_InTheSearchResults.title, isbn13: each_book_InTheSearchResults.isbn13, image_string: each_book_InTheSearchResults.image, thumbnail: nil))
-                        }
-                        
                         
                         AsyncImage(url: URL(string: each_book_InTheSearchResults.image)) { image in
                             image
@@ -106,7 +101,6 @@ struct ContentView: View {
                     }
                     .onDisappear {
                         textField_mode = .showCached
-                        get_the_search_results.cleanUp()
                     }
                     
                 } else {
@@ -120,7 +114,7 @@ struct ContentView: View {
                     ForEach(the_visited_cache_store.the_visited_cached.sorted(), id: \.self) { the_cached in
                         
                         VStack(alignment: .center, spacing: 5) {
-                            NavigationLink(destination: BookView(isbn13: the_cached.isbn13)) {
+                            NavigationLink(destination: BookView(isbn13: the_cached.isbn13, the_visited_cache_store: the_visited_cache_store, the_visited_cached: TheVisitedCached(title: the_cached.title, isbn13: the_cached.isbn13, image_string: the_cached.image_string, thumbnail: the_cached.thumbnail))) {
                                 VStack(alignment: .center, spacing: 5) {
                                     Text(the_cached.isbn13)
                                         .fontWeight(.light)
@@ -221,20 +215,13 @@ struct ContentView: View {
                     
                 }
             } /// THE END of .toolbar {}
+            .onDisappear {
+                get_the_search_results.cancel_all_threads()
+//                                get_the_search_results.cleanUp()
+            }
             
         } /// THE END of NavigationView
         
-    }
-    
-    /// `func add_the_data_to_the_cache()`
-    ///  Adding the data to the cache.
-    ///
-    ///  ** ASSUMPTION **
-    /// when tapped, textField_mode == .showCached
-    /// To paraphrase it, when tapping the searched item, it will be cached,
-    func add_the_data_to_the_cache(the_cached: TheVisitedCached) {
-        /// When clicking the NavigationLink, it will cache it by appending it
-        the_visited_cache_store.the_visited_cached.insert(TheVisitedCached(title: the_cached.title, isbn13: the_cached.isbn13, image_string: the_cached.image_string, thumbnail: the_cached.thumbnail))
     }
     
     func enter_into_the_caching_state() {
