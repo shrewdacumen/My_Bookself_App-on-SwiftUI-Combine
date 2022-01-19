@@ -63,6 +63,8 @@ frameworks: SwiftUI 3.0, Combine
 ### Data Structure `class Get__Search_Results`
     It is designed for fetching the remote data from the endpoint through
     its member function `func get_the_search_results(search_key: String)` based on the native `Combine framework` of Apple Inc.
+    And the function `get_all_rest_pages(search_key: search_key, to: number_of_pages__estimated)` of this class
+     actually finalize all the fetching processes by multi-threading.
 
 ## BookView, a SwiftUI view, also called `Detail Book` in the `App Structure.png` picture.
 - Endpoint​: https://api.itbook.store/1.0/books/{isbn13}

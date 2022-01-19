@@ -66,8 +66,13 @@ struct A_Book: Codable {
 
 /// This data structure is for getting the REST data from IT Bookstore API/search
 /// that is necessary for `ContentView`
+/// class Get__Search_Results is designed in a way that
+///  all books from all pages (from the remote endpoints) will be continuously added to the list.
 class Get__Search_Results: ObservableObject {
+    /// [ Page_number : SearchResults]
     @Published var the_search_results = [Int : Search_Results]()
+    
+    /// all books shall be consolidated to `books_from_all_pages` when all the background tasks are done.
     @Published var books_from_all_pages = [A_Book]()
     
     /// this is used to cancel any subscription.
@@ -104,6 +109,7 @@ class Get__Search_Results: ObservableObject {
                         return
                     }
                     
+                    /// Finalize all the fetching processes by multi-threading.
                     get_all_rest_pages(search_key: search_key, to: number_of_pages__estimated)
 #else
                     break
@@ -111,7 +117,7 @@ class Get__Search_Results: ObservableObject {
                     
                 case .failure(let error):
 #if DEBUG
-                    print("There was an error \(error)")
+                    print("get_the_search_results: There was an error \(error)")
 #else
                     break
 #endif
@@ -123,6 +129,7 @@ class Get__Search_Results: ObservableObject {
         
     }
     
+    /// get all the result from page 2...Final_Page.
     func get_all_rest_pages(search_key: String, to the_last_page_number: Int) {
         for current_page in 2...the_last_page_number {
             let current_url = urlByURLComponents(last_path_string: search_key, IT_BookStore_API_kind: .search, page: current_page)
@@ -146,7 +153,7 @@ class Get__Search_Results: ObservableObject {
                         
                     case .failure(let error):
 #if DEBUG
-                        print("There was an error \(error)")
+                        print("get_all_rest_pages: There was an error \(error)")
 #else
                         break
 #endif
@@ -202,4 +209,3 @@ class Get__Search_Results: ObservableObject {
     }
 }
 
-//class
