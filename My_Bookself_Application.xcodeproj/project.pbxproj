@@ -66,6 +66,7 @@
 		0916649F279592BF002D446F /* TheVisitedCached.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TheVisitedCached.swift; sourceTree = "<group>"; };
 		099A7B082795C00700213ECE /* Book_by_isbn13.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Book_by_isbn13.swift; sourceTree = "<group>"; };
 		099A7B0C2795C34700213ECE /* Search_a_book.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Search_a_book.swift; sourceTree = "<group>"; };
+		09FE44592797FD0100422812 /* App Structure.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "App Structure.png"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -106,6 +107,7 @@
 			isa = PBXGroup;
 			children = (
 				090669CC279717CF006552C2 /* README.md */,
+				09FE44592797FD0100422812 /* App Structure.png */,
 				090C18082795584100D667B8 /* My_Bookself_Application */,
 				090C18192795584200D667B8 /* My_Bookself_ApplicationTests */,
 				090C18232795584200D667B8 /* My_Bookself_ApplicationUITests */,
