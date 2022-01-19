@@ -29,23 +29,27 @@ struct ContentView: View {
             
             List {
                 
-                ForEach(the_visited_cache_store.the_visited_cached) { the_cached in
+                // Mark: - This section that caches the search data
+                /// that is stored as `the_visited_cache_store` in this project.
+                ///
+                /// **NOTE**
+                /// `sorted()` was being used as a makeshit to remove an error that
+                ///   Generic struct 'ForEach' requires that 'Set<TheVisitedCached>' conform to 'RandomAccessCollection'
+                ForEach(the_visited_cache_store.the_visited_cached.sorted(), id: \.self) { the_cached in
                     VStack(alignment: .center, spacing: 5) {
                         Text(the_cached.isbn13)
                             .fontWeight(.light)
                         Text(the_cached.title)
                             .font(.headline)
                         
-                        /// When the cached thumbnail exists,
+                        /// When the cached `thumbnail` exists, given that the whole cache exits.
                         if let thumbnail = the_cached.thumbnail {
                             NavigationLink(destination: BookView(isbn13: the_cached.isbn13)) {
                                 thumbnail
                             }
-                            // when tapped, textField_mode == .showCached
                             .onTapGesture {
-                                textField_mode = .showCached
-                                /// When clicking the NavigationLink, it will cache it by appending it
-                                the_visited_cache_store.the_visited_cached.append(TheVisitedCached(title: the_cached.title, isbn13: the_cached.isbn13, image_string: the_cached.image_string, thumbnail: thumbnail))
+                                enter_into_the_caching_state()
+                                //                                add_the_data_to_the_cache(the_cached)
                             }
                         } else { /// Those cases of both BEFORE thumbnail is cached or when it is being used by ContentView_Previews
                             NavigationLink(destination: BookView(isbn13: the_cached.isbn13)) {
@@ -66,11 +70,9 @@ struct ContentView: View {
                                     }
                                 }
                             }
-                            // when tapped, textField_mode == .showCached
                             .onTapGesture {
-                                textField_mode = .showCached
-                                /// When clicking the NavigationLink, it will cache it by appending it
-                                the_visited_cache_store.the_visited_cached.append(TheVisitedCached(title: the_cached.title, isbn13: the_cached.isbn13, image_string: the_cached.image_string, thumbnail: the_cached.thumbnail))
+                                enter_into_the_caching_state()
+                                //                                add_the_data_to_the_cache(the_cached)
                             }
                         }
                         
@@ -78,6 +80,7 @@ struct ContentView: View {
                     }
                 }
             } /// THE END of List {}
+            // MARK: - toolbar section
             //            .navigationTitle("My Bookself")
             .toolbar {
                 
@@ -85,6 +88,7 @@ struct ContentView: View {
                     
                     VStack(alignment: .center, spacing: 10) {
                         
+                        // Mark: - The First Row
                         HStack {
                             Spacer()
                             TextField("Enter Book Name Here!", text: $search_key, prompt: Text("Enter Book Name like 'mongodb'"))
@@ -98,6 +102,7 @@ struct ContentView: View {
                         }
                         .padding(.top, 15)
                         
+                        // Mark: - The 2dn Row
                         HStack(alignment: .top, spacing: 0) {
                             Spacer()
                             Text("Recently Searched")
@@ -124,6 +129,22 @@ struct ContentView: View {
             
         } /// THE END of NavigationView
         
+    }
+    
+    /// `func add_the_data_to_the_cache()`
+    ///  Adding the data to the cache.
+    ///
+    ///  ** ASSUMPTION **
+    /// when tapped, textField_mode == .showCached
+    /// To paraphrase it, when tapping the searched item, it will be cached,
+    func add_the_data_to_the_cache(_ the_cached: TheVisitedCached) {
+        enter_into_the_caching_state()
+        /// When clicking the NavigationLink, it will cache it by appending it
+        the_visited_cache_store.the_visited_cached.insert(TheVisitedCached(title: the_cached.title, isbn13: the_cached.isbn13, image_string: the_cached.image_string, thumbnail: the_cached.thumbnail))
+    }
+    
+    func enter_into_the_caching_state() {
+        textField_mode = .showCached
     }
 }
 

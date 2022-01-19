@@ -8,7 +8,7 @@
 import SwiftUI
 import Combine
 
-
+//TODO: incomplete. Allows the user to take a note.
 struct BookView: View {
     let isbn13: String
     
