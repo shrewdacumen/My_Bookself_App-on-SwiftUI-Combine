@@ -101,13 +101,16 @@ struct BookView: View {
                 /// * Its Solution *
                 /// I fragmented 14 elements by two VStacks.
                 VStack(alignment: .leading, spacing: 10) {
-                    
                     HStack {
                         Text("rating")
                             .padding(.trailing, 20)
                         HStack {
-                            ForEach(1...Int(the_selected_book.rating)!, id: \.self) { _ in
-                                Image(systemName: "star.fill")
+                            if let rating = Int(the_selected_book.rating), rating >= 1 {
+                                ForEach(1...rating, id: \.self) { _ in
+                                    Image(systemName: "star.fill")
+                                }
+                            } else {
+                                Image(systemName: "xmark.octagon")
                             }
                         }
                     }

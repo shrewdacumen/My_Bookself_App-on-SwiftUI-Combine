@@ -1,4 +1,10 @@
-#  Exercise Project `My_Bookself_App on SwiftUI & Combine`
+# Exercise Project `My_Bookself_App on SwiftUI & Combine`
+
+## Copyright (c) 2022 by Sungwook Kim
+## This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.
+## https://creativecommons.org/licenses/by-nc/4.0/
+## However, anyone who has donated can use it as OPEN SOURCE with ATTRIBUTION ASSURANCE LICENSE.
+
 
 ## Xcode Environment:
 Xcode Version 13.2.1 (13C100)
@@ -35,7 +41,18 @@ frameworks: SwiftUI 3.0, Combine
 
 ## ContentView, a SwiftUI view, also called `Search` in the `App Structure.png` picture.
 - Endpoint​: https://api.itbook.store/1.0/search/{query}
+   However, the above does NOT produce full query result but the same as `https://api.itbook.store/1.0/search/{query}/1`
+   And this is found by my experiment. 
+   
 - Endpoint (with pagination)​: https://api.itbook.store/1.0/search/{query}/{page}
+    The last page can NOT be known until the app reached the next to the final page.
+    
+    For example, let's say that 8 is the final page to query. And then, `curl https://api.itbook.store/1.0/search/mongodb/9` will produce
+    `{"error":"0","total":"0","page":"9","books":[]}`
+    
+    , whereas the query on the final page 8 produces
+    `{"error":"0","total":"71","page":"8","books":[{"title":"Seven Databases in Seven Weeks","subtitle":"A Guide to Modern Databases and the NoSQL Movement","isbn13":"9781934356920","price":"$12.59","image":"https://itbook.store/img/books/9781934356920.png","url":"https://itbook.store/books/9781934356920"}]}`
+    The only way to know what is the final page is to query the page pass to the final page 8, in this case, 9. 
 - It caches the search data that is stored as `the_visited_cache_store` in this project.
 - The first view when the user launch the app.
 - TheVisitedCached and Store_of_The_Visited_Cached are both the view models which supports `ContentView`
@@ -64,3 +81,13 @@ frameworks: SwiftUI 3.0, Combine
 - It contains Test-Driven Development features.
 - It controls the global setting across all the sources of the app.
 
+## Helper functions, including `func urlByURLComponents`
+/// ** Function **
+///  Returns the proper URL based on `IT_BookStore_API_kind`.
+///  Because the app is going to utilize 3 parts of IT Bookstore API, this will consolidate all the works.
+/// - Parameters:
+/// - last_path_string: the last specific string for query.  It can be the isbn13 number, new or the query text on the TextField from ContentView
+/// - IT_BookStore_API_kind: IT Bookstore API has 3 different kinds.  search, new, books
+/// - page: the page number when `.search` is selected.
+/// - Returns: URL
+func urlByURLComponents(last_path_string: String, IT_BookStore_API_kind: IT_BookStore_API_kind, page: Int? = nil) -> URL 

@@ -73,8 +73,8 @@ class GetTheSelectedBook: ObservableObject {
                 switch completion_state {
                 case .finished:
 #if DEBUG
-                    print("It is finished!")
-                    print("\(String(describing: self.the_selected_book))")
+                    print("GetTheSelectedBook: It is finished!")
+                    print("GetTheSelectedBook: \(String(describing: self.the_selected_book))")
                     /// Testing!
                     assert(self.the_selected_book != nil)
 #else

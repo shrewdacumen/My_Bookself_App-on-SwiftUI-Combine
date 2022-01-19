@@ -5,6 +5,22 @@
 //  Created by sungwook on 1/17/22.
 //
 
+///- Endpoint​: https://api.itbook.store/1.0/search/{query}
+///   However, the above does NOT produce full query result but the same as `https://api.itbook.store/1.0/search/{query}/1`
+///   And this is found by my experiment.
+///
+///- Endpoint (with pagination)​: https://api.itbook.store/1.0/search/{query}/{page}
+///    The last page can NOT be known until the app reached the next to the final page.
+///
+///    For example, let's say that 8 is the final page to query. And then, `curl https://api.itbook.store/1.0/search/mongodb/9` will produce
+///    `{"error":"0","total":"0","page":"9","books":[]}`
+///
+///    , whereas the query on the final page 8 produces
+///    `{"error":"0","total":"71","page":"8","books":[{"title":"Seven Databases in Seven Weeks","subtitle":"A Guide to Modern Databases and the NoSQL Movement","isbn13":"9781934356920","price":"$12.59","image":"https://itbook.store/img/books/9781934356920.png","url":"https://itbook.store/books/9781934356920"}]}`
+///
+///    The only way to know what is the final page is to query the page pass to the final page 8, in this case, 9.
+
+
 import SwiftUI
 
 /// This controls the states of user interaction with `the textField`.
@@ -24,7 +40,9 @@ struct ContentView: View {
     //TODO: incomplete. add the feature accordingly.
     @State var the_total_pages_searched = 0
     
+    //TODO: incomplete. currently, it has no function.
     @State var textField_mode: TheTextFieldMode = .showCached
+    @ObservedObject var get_the_search_results = Get__Search_Results()
     
     var body: some View {
         
@@ -32,30 +50,91 @@ struct ContentView: View {
             
             List {
                 
-                // Mark: - This section that caches the search data
-                /// that is stored as `the_visited_cache_store` in this project.
-                ///
-                /// **NOTE**
-                /// `sorted()` was being used as a makeshit to remove an error that
-                ///   Generic struct 'ForEach' requires that 'Set<TheVisitedCached>' conform to 'RandomAccessCollection'
-                ForEach(the_visited_cache_store.the_visited_cached.sorted(), id: \.self) { the_cached in
-                    VStack(alignment: .center, spacing: 5) {
-                        Text(the_cached.isbn13)
-                            .fontWeight(.light)
-                        Text(the_cached.title)
-                            .font(.headline)
+                /// As soon as it has a search_results,
+                if get_the_search_results.does_it_have_search_results() {
+                    
+                    let the_search_results_1_or_2 = get_the_search_results.the_search_results[1] ?? get_the_search_results.the_search_results[2]
+                    
+                    ForEach(the_search_results_1_or_2!.books, id: \.isbn13) { each_book_InTheSearchResults in
                         
-                        /// When the cached `thumbnail` exists, given that the whole cache exits.
-                        if let thumbnail = the_cached.thumbnail {
+                        NavigationLink(destination: BookView(isbn13: each_book_InTheSearchResults.isbn13)) {
+                            VStack(alignment: .center, spacing: 5) {
+                                Text(each_book_InTheSearchResults.isbn13)
+                                    .fontWeight(.light)
+                                Text(each_book_InTheSearchResults.title)
+                                    .font(.headline)
+                                Text(each_book_InTheSearchResults.subtitle)
+                                    .font(.body)
+                                Text(each_book_InTheSearchResults.price)
+                            }
+                        }
+                        //TODO: incomplete. move the following to BookView.
+                        .onTapGesture {
+                            add_the_data_to_the_cache(the_cached: TheVisitedCached(title: each_book_InTheSearchResults.title, isbn13: each_book_InTheSearchResults.isbn13, image_string: each_book_InTheSearchResults.image, thumbnail: nil))
+                        }
+                        
+                        HStack {
+                            Text("image")
+                                .padding(.trailing, 20)
+                            
+                            AsyncImage(url: URL(string: each_book_InTheSearchResults.image)) { image in
+                                image
+                                    .frame(width: TheControlPanel.ContentView_image_size.width, height: TheControlPanel.ContentView_image_size.height, alignment: .center)
+                            } placeholder: {
+                                ZStack {
+                                    Text("Loading ...")
+                                        .foregroundColor(Color.yellow)
+                                    RoundedRectangle(cornerSize: CGSize(width: 10, height: 10))
+                                        .frame(width: TheControlPanel.ContentView_image_size.width, height: TheControlPanel.ContentView_image_size.height, alignment: .center)
+                                        .foregroundColor(Color.blue)
+                                }
+                            }
+                        }
+                        //                        .frame(height: TheControlPanel.BookView_image_size.height, alignment: .leading)
+                        //                        .padding(.top, 30)
+                        //                        .padding(.bottom, 30)
+                        
+                        HStack {
+                            Text("URL")
+                                .padding(.trailing, 20)
+                            Link("Click to Open", destination: URL(string: each_book_InTheSearchResults.url)!)
+                        }
+                        
+                    } /// THE END of ForEach(the_search_results_1_or_2!.books, id: \.isbn13) { each_book_InTheSearchResults in
+                    .onAppear {
+                        textField_mode = .showSearchResult
+                    }
+                    .onDisappear {
+                        textField_mode = .showCached
+                        get_the_search_results.cleanUp()
+                    }
+                    
+                } else {
+                    
+                    // Mark: - This section that caches the search data
+                    /// that is stored as `the_visited_cache_store` in this project.
+                    ///
+                    /// **NOTE**
+                    /// `sorted()` was being used as a makeshit to remove an error that
+                    ///   Generic struct 'ForEach' requires that 'Set<TheVisitedCached>' conform to 'RandomAccessCollection'
+                    ForEach(the_visited_cache_store.the_visited_cached.sorted(), id: \.self) { the_cached in
+                        
+                        VStack(alignment: .center, spacing: 5) {
                             NavigationLink(destination: BookView(isbn13: the_cached.isbn13)) {
+                                VStack(alignment: .center, spacing: 5) {
+                                    Text(the_cached.isbn13)
+                                        .fontWeight(.light)
+                                    Text(the_cached.title)
+                                        .font(.headline)
+                                }
+                            }
+                            
+                            /// When the cached `thumbnail` exists, given that the whole cache exits.
+                            if let thumbnail = the_cached.thumbnail {
+                                
                                 thumbnail
-                            }
-                            .onTapGesture {
-                                enter_into_the_caching_state()
-                                //                                add_the_data_to_the_cache(the_cached)
-                            }
-                        } else { /// Those cases of both BEFORE thumbnail is cached or when it is being used by ContentView_Previews
-                            NavigationLink(destination: BookView(isbn13: the_cached.isbn13)) {
+                                
+                            } else { /// Those cases of both BEFORE thumbnail is cached or when it is being used by ContentView_Previews
                                 AsyncImage(url: URL(string: the_cached.image_string)) { image in
                                     image
                                         .frame(width: TheControlPanel.ContentView_image_size.width, height: TheControlPanel.ContentView_image_size.height, alignment: .center)
@@ -72,16 +151,17 @@ struct ContentView: View {
                                             .foregroundColor(Color.blue)
                                     }
                                 }
+                                
                             }
-                            .onTapGesture {
-                                enter_into_the_caching_state()
-                                //                                add_the_data_to_the_cache(the_cached)
-                            }
-                        }
-                        
-                        
-                    }
-                }
+                            
+                        } /// THE END OF VStack(alignment: .center, spacing: 5) {
+                            
+                    } /// THE END OF ForEach(the_visited_cache_store.the_visited_cached.sorted(), id: \.self) { the_cached in
+
+                    
+                } /// THE END of  } else {
+                
+                
             } /// THE END of List {}
             // MARK: - toolbar section
             //            .navigationTitle("My Bookself")
@@ -102,6 +182,10 @@ struct ContentView: View {
                                     
                                     //TODO: The following shall be set after getting at least a result.
                                     textField_mode = .showSearchResult
+                                    
+                                    /// remove the previous search results.
+                                    get_the_search_results.cleanUp()
+                                    get_the_search_results.get_the_search_results(search_key: search_key)
                                 }
                             
                             Spacer()
@@ -143,8 +227,7 @@ struct ContentView: View {
     ///  ** ASSUMPTION **
     /// when tapped, textField_mode == .showCached
     /// To paraphrase it, when tapping the searched item, it will be cached,
-    func add_the_data_to_the_cache(_ the_cached: TheVisitedCached) {
-        enter_into_the_caching_state()
+    func add_the_data_to_the_cache(the_cached: TheVisitedCached) {
         /// When clicking the NavigationLink, it will cache it by appending it
         the_visited_cache_store.the_visited_cached.insert(TheVisitedCached(title: the_cached.title, isbn13: the_cached.isbn13, image_string: the_cached.image_string, thumbnail: the_cached.thumbnail))
     }

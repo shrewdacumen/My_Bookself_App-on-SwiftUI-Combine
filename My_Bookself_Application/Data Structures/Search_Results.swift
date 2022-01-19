@@ -47,8 +47,8 @@ import Combine
 /// `Search_Results`
 /// The JSON placeholder data structure of IT Bookstore API/search in Swfit.
 struct Search_Results: Codable {
-    let total: Int
-    let page: Int
+    let total: String /// It seems that it is the total number of books to be queried.
+    let page: String
     let books: [A_Book]
 }
 
@@ -67,15 +67,17 @@ struct A_Book: Codable {
 /// This data structure is for getting the REST data from IT Bookstore API/search
 /// that is necessary for `ContentView`
 class Get__Search_Results: ObservableObject {
-    @Published var the_search_results: Search_Results?
+    @Published var the_search_results = [Int : Search_Results]()
     
     /// this is used to cancel any subscription.
     var cancellables = Set<AnyCancellable>()
     
     func get_the_search_results(search_key: String) {
-        //TODO: incomplete.  Try first the 1st page. Later, complete the rest.
-        let url = urlByURLComponents(last_path_string: search_key, IT_BookStore_API_kind: .search, page: 1)
-        URLSession.shared.dataTaskPublisher(for: url)
+        
+        //TODO: incomplete.  Try first 2 pages. And then, complete the rest.
+        let starting_page = 1
+        let starting_url = urlByURLComponents(last_path_string: search_key, IT_BookStore_API_kind: .search, page: starting_page)
+        URLSession.shared.dataTaskPublisher(for: starting_url)
             .subscribe(on: DispatchQueue.global(qos: .background))
             .receive(on: DispatchQueue.main)
             .tryMap(handleOutput)
@@ -84,10 +86,10 @@ class Get__Search_Results: ObservableObject {
                 switch completion_state {
                 case .finished:
 #if DEBUG
-                    print("It is finished!")
-                    print("\(String(describing: self.the_search_results))")
+                    print("Page #\(starting_page): It is finished!")
+                    print("Page #\(starting_page): \(String(describing: self.the_search_results[starting_page]))")
                     /// Testing!
-                    assert(self.the_search_results != nil)
+                    assert(self.the_search_results[starting_page] != nil)
 #else
                     break
 #endif
@@ -100,7 +102,39 @@ class Get__Search_Results: ObservableObject {
 #endif
                 }
             } receiveValue: { [unowned self] (returnedPosts) in
-                self.the_search_results = returnedPosts
+                self.the_search_results[starting_page] = returnedPosts
+            }
+            .store(in: &cancellables)
+        
+        
+        let current_page = 2
+        let current_url = urlByURLComponents(last_path_string: search_key, IT_BookStore_API_kind: .search, page: current_page)
+        URLSession.shared.dataTaskPublisher(for: current_url)
+            .subscribe(on: DispatchQueue.global(qos: .background))
+            .receive(on: DispatchQueue.main)
+            .tryMap(handleOutput)
+            .decode (type: Search_Results.self, decoder: JSONDecoder())
+            .sink { (completion_state) in
+                switch completion_state {
+                case .finished:
+#if DEBUG
+                    print("Page #\(current_page): It is finished!")
+                    print("Page #\(current_page): \(String(describing: self.the_search_results[current_page]))")
+                    /// Testing!
+                    assert(self.the_search_results[current_page] != nil)
+#else
+                    break
+#endif
+                    
+                case .failure(let error):
+#if DEBUG
+                    print("There was an error \(error)")
+#else
+                    break
+#endif
+                }
+            } receiveValue: { [unowned self] (returnedPosts) in
+                self.the_search_results[current_page] = returnedPosts
             }
             .store(in: &cancellables)
     }
@@ -117,7 +151,7 @@ class Get__Search_Results: ObservableObject {
         cancellables.forEach {
             $0.cancel()
         }
-        the_search_results = nil
+        the_search_results.removeAll(keepingCapacity: true)
     }
     
     /// cancel all ongoing tasks of getting data from the remote endpoints.
@@ -125,9 +159,12 @@ class Get__Search_Results: ObservableObject {
         cancellables.forEach {
             $0.cancel()
         }
-        the_search_results = nil
+        the_search_results.removeAll(keepingCapacity: true)
+    }
+    
+    func does_it_have_search_results() -> Bool {
+        the_search_results.isEmpty == false
     }
 }
 
-
-
+//class
