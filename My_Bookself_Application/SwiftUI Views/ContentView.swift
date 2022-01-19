@@ -37,6 +37,7 @@ struct ContentView: View {
     @ObservedObject var the_visited_cache_store: Store_of_The_Visited_Cached
     
     @State var search_key: String = ""
+    @State var is_NOT_FOUND_MESSGAGE_opacity = 0.0
     
     @StateObject var get_the_search_results = Get__Search_Results()
     
@@ -50,10 +51,11 @@ struct ContentView: View {
                 
                 /// As soon as it has a search_results,
                 if get_the_search_results.does_it_have_search_results() && search_key != "" {
+ 
+                    Text("Total Books found: \(get_the_search_results.the_search_results[1]!.total)")
+                        .foregroundColor(Color.blue)
                     
-                    let the_search_results_1_or_2 = get_the_search_results.the_search_results[1] ?? get_the_search_results.the_search_results[2]
-                    
-                    ForEach(the_search_results_1_or_2!.books, id: \.isbn13) { each_book_InTheSearchResults in
+                    ForEach(get_the_search_results.books_from_all_pages, id: \.isbn13) { each_book_InTheSearchResults in
                         
                         NavigationLink(destination: BookView(isbn13: each_book_InTheSearchResults.isbn13, the_visited_cache_store: the_visited_cache_store, the_visited_cached: TheVisitedCached(title: each_book_InTheSearchResults.title, isbn13: each_book_InTheSearchResults.isbn13, image_string: each_book_InTheSearchResults.image, thumbnail: nil))) {
                             VStack(alignment: .center, spacing: 5) {
@@ -81,9 +83,6 @@ struct ContentView: View {
                             }
                         }
                         .frame(width: TheControlPanel.ContentView_image_size.width, height: TheControlPanel.ContentView_image_size.height, alignment: .center)
-                        //                        .padding(.top, 15)
-                        //                        .padding(.bottom, 15)
-                        
                         
                         HStack {
                             Text("URL")
@@ -94,6 +93,20 @@ struct ContentView: View {
                     } /// THE END of ForEach(the_search_results_1_or_2!.books, id: \.isbn13) { each_book_InTheSearchResults in
                     
                 } else {
+                    
+                    if get_the_search_results.there_are_no_search_results() && search_key != "" {
+                        
+                        Text("Can't find a book by the keyword \(search_key)")
+                            .font(.title)
+                            .foregroundColor(Color.red)
+                            .opacity(is_NOT_FOUND_MESSGAGE_opacity)
+                            .onAppear {
+                                withAnimation(.easeIn(duration: 1.0)) {
+                                    is_NOT_FOUND_MESSGAGE_opacity = 1.0
+                                }
+                            }
+                    
+                    }
                     
                     // Mark: - This section that caches the visited books
                     /// that is stored as `the_visited_cache_store` in this project.
@@ -117,6 +130,7 @@ struct ContentView: View {
                             if let thumbnail = the_cached.thumbnail {
                                 
                                 thumbnail
+                                    .resizable()
                                 
                             } else { /// Those cases of both BEFORE thumbnail is cached or when it is being used by ContentView_Previews
                                 
@@ -138,8 +152,6 @@ struct ContentView: View {
                                     }
                                 }
                                 .frame(width: TheControlPanel.ContentView_image_size.width, height: TheControlPanel.ContentView_image_size.height, alignment: .center)
-                                //                                .padding(.top, 15)
-                                //                                .padding(.bottom, 15)
                                 
                             }
                             
@@ -203,7 +215,6 @@ struct ContentView: View {
             } /// THE END of .toolbar {}
             .onDisappear {
                 get_the_search_results.cancel_all_threads()
-//                                get_the_search_results.cleanUp()
             }
             
         } /// THE END of NavigationView

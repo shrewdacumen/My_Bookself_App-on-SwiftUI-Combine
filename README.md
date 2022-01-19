@@ -91,3 +91,11 @@ frameworks: SwiftUI 3.0, Combine
 /// - page: the page number when `.search` is selected.
 /// - Returns: URL
 func urlByURLComponents(last_path_string: String, IT_BookStore_API_kind: IT_BookStore_API_kind, page: Int? = nil) -> URL 
+
+
+## The Main Mechanic
+As the motif of Music.app, item 1 was added. 
+1. When the `search_key` on the TextField is "" or empty, ContentView (the first page) will display the list of the cached visited books.
+2. When the keyword produces nothing, it will be notified with red Text on top of the list on the first page.
+3. Otherwise, the previous searched list (that are cached) will be displayed instead.
+

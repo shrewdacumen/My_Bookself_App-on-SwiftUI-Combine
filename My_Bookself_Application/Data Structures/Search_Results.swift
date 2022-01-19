@@ -68,28 +68,43 @@ struct A_Book: Codable {
 /// that is necessary for `ContentView`
 class Get__Search_Results: ObservableObject {
     @Published var the_search_results = [Int : Search_Results]()
+    @Published var books_from_all_pages = [A_Book]()
     
     /// this is used to cancel any subscription.
     var cancellables = Set<AnyCancellable>()
     
     func get_the_search_results(search_key: String) {
-        
-        //TODO: incomplete.  Try first 2 pages. And then, complete the rest.
-        let starting_page = 1
-        let starting_url = urlByURLComponents(last_path_string: search_key, IT_BookStore_API_kind: .search, page: starting_page)
+        let starting_url = urlByURLComponents(last_path_string: search_key, IT_BookStore_API_kind: .search, page: 1)
         URLSession.shared.dataTaskPublisher(for: starting_url)
             .subscribe(on: DispatchQueue.global(qos: .background))
             .receive(on: DispatchQueue.main)
             .tryMap(handleOutput)
             .decode (type: Search_Results.self, decoder: JSONDecoder())
-            .sink { (completion_state) in
+            .sink { [self] (completion_state) in
                 switch completion_state {
                 case .finished:
 #if DEBUG
-                    print("Page #\(starting_page): It is finished!")
-                    print("Page #\(starting_page): \(String(describing: self.the_search_results[starting_page]))")
+                    print("Page #1: It is finished!")
+                    print("Page #1: \(String(describing: self.the_search_results[1]))")
                     /// Testing!
-                    assert(self.the_search_results[starting_page] != nil)
+                    assert(self.the_search_results[1] != nil)
+                    
+                    self.books_from_all_pages.append(contentsOf: self.the_search_results[1]!.books)
+                    
+                    guard let total_number_of_books = Int(self.the_search_results[1]!.total), total_number_of_books > 0 else {
+                        return
+                    }
+                    let num_of_books_in_page_1 = self.the_search_results[1]!.books.count
+                    var number_of_pages__estimated = total_number_of_books/num_of_books_in_page_1
+                    if Double(number_of_pages__estimated) < (Double(total_number_of_books)/Double(num_of_books_in_page_1)) {
+                        number_of_pages__estimated += 1
+                    }
+                    
+                    guard number_of_pages__estimated >= 2 else {
+                        return
+                    }
+                    
+                    get_all_rest_pages(search_key: search_key, to: number_of_pages__estimated)
 #else
                     break
 #endif
@@ -102,41 +117,45 @@ class Get__Search_Results: ObservableObject {
 #endif
                 }
             } receiveValue: { [unowned self] (returnedPosts) in
-                self.the_search_results[starting_page] = returnedPosts
+                self.the_search_results[1] = returnedPosts
             }
             .store(in: &cancellables)
         
-        
-        let current_page = 2
-        let current_url = urlByURLComponents(last_path_string: search_key, IT_BookStore_API_kind: .search, page: current_page)
-        URLSession.shared.dataTaskPublisher(for: current_url)
-            .subscribe(on: DispatchQueue.global(qos: .background))
-            .receive(on: DispatchQueue.main)
-            .tryMap(handleOutput)
-            .decode (type: Search_Results.self, decoder: JSONDecoder())
-            .sink { (completion_state) in
-                switch completion_state {
-                case .finished:
+    }
+    
+    func get_all_rest_pages(search_key: String, to the_last_page_number: Int) {
+        for current_page in 2...the_last_page_number {
+            let current_url = urlByURLComponents(last_path_string: search_key, IT_BookStore_API_kind: .search, page: current_page)
+            URLSession.shared.dataTaskPublisher(for: current_url)
+                .subscribe(on: DispatchQueue.global(qos: .background))
+                .receive(on: DispatchQueue.main)
+                .tryMap(handleOutput)
+                .decode (type: Search_Results.self, decoder: JSONDecoder())
+                .sink { (completion_state) in
+                    switch completion_state {
+                    case .finished:
 #if DEBUG
-                    print("Page #\(current_page): It is finished!")
-                    print("Page #\(current_page): \(String(describing: self.the_search_results[current_page]))")
-                    /// Testing!
-                    assert(self.the_search_results[current_page] != nil)
+                        print("Page #\(current_page): It is finished!")
+                        print("Page #\(current_page): \(String(describing: self.the_search_results[current_page]))")
+                        /// Testing!
+                        assert(self.the_search_results[current_page] != nil)
+                        self.books_from_all_pages.append(contentsOf: self.the_search_results[current_page]!.books)
 #else
-                    break
+                        break
 #endif
-                    
-                case .failure(let error):
+                        
+                    case .failure(let error):
 #if DEBUG
-                    print("There was an error \(error)")
+                        print("There was an error \(error)")
 #else
-                    break
+                        break
 #endif
+                    }
+                } receiveValue: { [unowned self] (returnedPosts) in
+                    self.the_search_results[current_page] = returnedPosts
                 }
-            } receiveValue: { [unowned self] (returnedPosts) in
-                self.the_search_results[current_page] = returnedPosts
-            }
-            .store(in: &cancellables)
+                .store(in: &cancellables)
+        }
     }
     
     func handleOutput (output: URLSession.DataTaskPublisher.Output) throws -> Data {
@@ -169,7 +188,17 @@ class Get__Search_Results: ObservableObject {
     }
     
     func does_it_have_search_results() -> Bool {
-        the_search_results.isEmpty == false
+        guard let the_search_result = the_search_results[1], let num = Int(the_search_result.total), num > 0 else {
+            return false
+        }
+        return true
+    }
+    
+    func there_are_no_search_results() -> Bool {
+        guard let the_search_result = the_search_results[1], let num = Int(the_search_result.total), num == 0 else {
+            return false
+        }
+        return true
     }
 }
 
