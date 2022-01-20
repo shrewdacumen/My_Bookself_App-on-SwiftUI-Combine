@@ -40,6 +40,7 @@ frameworks: SwiftUI 3.0, Combine
 
 
 ## ContentView, a SwiftUI view, also called `Search` in the `App Structure.png` picture.
+## The implementation for `Search` in the diagram.
 - Endpoint​: https://api.itbook.store/1.0/search/{query}
    However, the above does NOT produce full query result but the same as `https://api.itbook.store/1.0/search/{query}/1`
    And this is found by my experiment. 
@@ -67,6 +68,7 @@ frameworks: SwiftUI 3.0, Combine
      actually finalize all the fetching processes by multi-threading.
 
 ## BookView, a SwiftUI view, also called `Detail Book` in the `App Structure.png` picture.
+## The implementation for `DetailBook` in the diagram.
 - Endpoint​: https://api.itbook.store/1.0/books/{isbn13}
 - Allows the user to take a note.
 - Connects hyperlink with the book’s URL.
@@ -84,7 +86,7 @@ frameworks: SwiftUI 3.0, Combine
 - It controls the global setting across all the sources of the app.
 
 ## Helper functions, including `func urlByURLComponents`
-/// ** Function **
+/// ** Func urlByURLComponents **
 ///  Returns the proper URL based on `IT_BookStore_API_kind`.
 ///  Because the app is going to utilize 3 parts of IT Bookstore API, this will consolidate all the works.
 /// - Parameters:

@@ -9,6 +9,8 @@ import SwiftUI
 import Combine
 
 //TODO: incomplete. Allows the user to take a note.
+
+/// The implementation for `DetailBook` in the diagram.
 struct BookView: View {
     let isbn13: String
     
