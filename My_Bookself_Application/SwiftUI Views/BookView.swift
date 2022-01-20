@@ -14,6 +14,8 @@ import Combine
 struct BookView: View {
     let isbn13: String
     
+    @State var fulltext = "Write your note here"
+    
     /// ** CAVEAT **
     /// This is an observed object: `a reference type`, not a value type!!!
     @StateObject var get_the_selected_book = GetTheSelectedBook()
@@ -21,6 +23,8 @@ struct BookView: View {
     @ObservedObject var the_visited_cache_store: Store_of_The_Visited_Cached
     
     @ObservedObject var the_visited_cached: TheVisitedCached
+    
+    @EnvironmentObject var userNote: UserNote
     
     var body: some View {
         
@@ -43,6 +47,18 @@ struct BookView: View {
                             Text(the_selected_book.error)
                         }
                     }
+                    
+                    TextEditor(text: $fulltext)
+                        .foregroundColor(Color.gray)
+                        .font(.custom("HelveticaNeue", size: 13))
+                        .onAppear {
+                            if let note_string_stored = userNote.notes[isbn13] {
+                                fulltext = note_string_stored
+                            }
+                        }
+                        .onChange(of: fulltext) { newValue in
+                            userNote.notes[isbn13] = newValue
+                        }
                     
                     HStack {
                         Text("title")

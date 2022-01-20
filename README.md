@@ -79,6 +79,9 @@ frameworks: SwiftUI 3.0, Combine
 ### Data Structure `class GetTheSelectedBook`
     It is designed for fetching the remote data from the endpoint through
     its member function `func get_the_selected_book(isbn13: String)` based on the native `Combine framework` of Apple Inc.
+### Data Structure`class UserNote`
+  This is letting the user to take a note on BookView (or DetailBook in the diagram).
+  And this is stored persistently that each book has its own user note that has been stored.
      
      
 ## TheControlPanel struct
