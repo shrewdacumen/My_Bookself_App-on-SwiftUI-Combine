@@ -98,8 +98,11 @@ func urlByURLComponents(last_path_string: String, IT_BookStore_API_kind: IT_Book
 
 
 ## The Main Mechanic
-As the motif of Music.app, item 1 was added. 
+As the motif of Music.app, item 1 was added.
+And there are two kinds of cache system that makes the design & the code complicated.
+But this is what I had understood through the close study on Apple's official `Music.app`.
+ 
 1. When the `search_key` on the TextField is "" or empty, ContentView (the first page) will display the list of the cached visited books.
 2. When the keyword produces nothing, it will be notified with red Text on top of the list on the first page.
-3. Otherwise, the previous searched list (that are cached) will be displayed instead.
+3. Otherwise, the previous searched list (that are also cached) will be displayed instead.
 

@@ -37,8 +37,11 @@ struct ContentView: View {
     @ObservedObject var the_visited_cache_store: Store_of_The_Visited_Cached
     
     @State var search_key = ""
-    @State var search_key__captured = ""
-    @State var textField_mode = TheTextFieldMode.showCached
+    
+    // MARK: PLAN B design
+    //    @State var search_key__captured = ""
+    //    @State var textField_mode = TheTextFieldMode.showCached
+    
     @State var is_NOT_FOUND_MESSGAGE_opacity = 0.0
     
     @StateObject var get_the_search_results = Get__Search_Results()
@@ -52,7 +55,9 @@ struct ContentView: View {
                 // Mark: - This section that lists the searched results
                 
                 /// As soon as it has a search_results,
-                if get_the_search_results.does_it_have_search_results() && textField_mode == .showSearchResult {
+                /// search_key != ""    ---> PLAN A
+                /// textField_mode == .showSearchResult   ---> PLAN B
+                if get_the_search_results.does_it_have_search_results() && search_key != "" {
  
                     Text("Total Books found: \(get_the_search_results.the_search_results[1]!.total)")
                         .foregroundColor(Color.blue)
@@ -96,7 +101,9 @@ struct ContentView: View {
                     
                 } else {
                     
-                    if get_the_search_results.there_are_no_search_results() && textField_mode == .showSearchResult {
+                    /// search_key != ""    ---> PLAN A
+                    /// textField_mode == .showSearchResult   ---> PLAN B
+                    if get_the_search_results.there_are_no_search_results() && search_key != "" {
                         
                         Text("Can't find a book by the keyword \(search_key)")
                             .font(.title)
@@ -182,20 +189,30 @@ struct ContentView: View {
                             TextField("Enter Book Name Here!", text: $search_key, prompt: Text("Enter Book Name like 'mongodb'"))
                             // MARK: onSubmit()
                                 .onSubmit {
-                                    search_key__captured = search_key
-                                    textField_mode = .showSearchResult
+                                    // MARK: PLAN B design
+                                    ///```
+                                    /// search_key__captured = search_key
+                                    /// textField_mode = .showSearchResult
+                                    ///```
                                     /// Reset the current `search_key` after search_ley is captured.
                                     /// This will activate the list of previously visited books that are cached as well.
-                                    search_key = ""
+                                    ///```
+                                    /// search_key = ""
+                                    ///```
+                                    
+                                    // MARK: PLAN A design
                                     /// remove the previous search results.
                                     get_the_search_results.cleanUp()
-                                    get_the_search_results.get_the_search_results(search_key: search_key__captured)
+                                    get_the_search_results.get_the_search_results(search_key: search_key)
                                 }
-                                .onChange(of: search_key) { newValue in
-                                    if newValue != "" && newValue != search_key__captured {
-                                        textField_mode = .showCached
-                                    }
-                                }
+                            // MARK: PLAN B design
+                            ///```
+                            /// .onChange(of: search_key) { newValue in
+                            ///     if newValue != "" && newValue != search_key__captured {
+                            ///         textField_mode = .showCached
+                            ///     }
+                            /// }
+                            ///```
                             
                             Spacer()
                         }
