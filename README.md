@@ -1,10 +1,14 @@
-# Exercise Project `My_Bookself_App on SwiftUI & Combine`
+# Exercise Project `My_Bookshelf_App on SwiftUI & Combine`
 
 ## Copyright (c) 2022 by Sungwook Kim
 ## This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.
 ## https://creativecommons.org/licenses/by-nc/4.0/
 ## However, anyone who has donated can use it as OPEN SOURCE with ATTRIBUTION ASSURANCE LICENSE.
 
+
+## The DEMO video
+   Please click to watch the demo video:
+   [Demo Video](https://youtu.be/IQaLHInpRnw)
 
 ## Xcode Environment:
 Xcode Version 13.2.1 (13C100)
