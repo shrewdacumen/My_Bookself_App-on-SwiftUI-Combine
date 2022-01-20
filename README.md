@@ -41,6 +41,9 @@ frameworks: SwiftUI 3.0, Combine
 3. It is being done through the manual settings like `TDD_SETTING` on `struct TheControlPanel`
     For example, `static let TDD_SETTING = TESTING_STATE.RELEASE` for RELEASE.
     static let TDD_Setting = TESTING_STATE.TEST_BookView for pinpointing the TEST on the SwiftUI view `BookView`.
+For example,
+    func test__class_Get__Search_Results() under class My_Bookself_ApplicationTests are one of XCT test functions.
+    Without this, I have tested many times those REST related functions and multi-threading codes in other ways.    
 
 
 ## ContentView, a SwiftUI view, also called `Search` in the `App Structure.png` picture.
