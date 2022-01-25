@@ -10,6 +10,12 @@
    Please click to watch the demo video:
    [Demo Video](https://youtu.be/IQaLHInpRnw)
 
+## The Purpose
+    - I created in a code-challenge manner — time of the project limited to (originally assumed) 3 hours.
+    - A simple bookshelf app with a motif of the official music app of Apple Inc., 
+    under the page-separated constraints of 30-50 dispatch threadings 
+    in multi-threading programming required for getting data from remote endpoints.
+
 ## Xcode Environment:
 Xcode Version 13.2.1 (13C100)
 iOS deployment target 15.2 (15.0 up compatible)

@@ -176,13 +176,21 @@
 			path = Extensions;
 			sourceTree = "<group>";
 		};
+		091FF5C727A006CA00545273 /* Combine */ = {
+			isa = PBXGroup;
+			children = (
+				0916649F279592BF002D446F /* TheVisitedCached.swift */,
+				099A7B0C2795C34700213ECE /* Search_Results.swift */,
+			);
+			path = Combine;
+			sourceTree = "<group>";
+		};
 		099A7B0B2795C01E00213ECE /* Data Structures */ = {
 			isa = PBXGroup;
 			children = (
+				091FF5C727A006CA00545273 /* Combine */,
 				0912057227993B090067EF45 /* UserNote.swift */,
-				0916649F279592BF002D446F /* TheVisitedCached.swift */,
 				099A7B082795C00700213ECE /* Book_by_isbn13.swift */,
-				099A7B0C2795C34700213ECE /* Search_Results.swift */,
 				0914C9CC2796B4D700F5D436 /* TheControlPanel.swift */,
 			);
 			path = "Data Structures";
